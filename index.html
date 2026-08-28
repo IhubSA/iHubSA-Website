@@ -1,0 +1,2838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iHubSA | Business Digitalisation & SaaS Solutions</title>
+    <meta name="description" content="iHubSA transforms Excel spreadsheets, manual processes and business workflows into powerful online applications, databases, dashboards and SaaS solutions.">
+    <meta name="theme-color" content="#073F68">
+    <meta property="og:title" content="iHubSA | Business Digitalisation & SaaS Solutions">
+    <meta property="og:description" content="Turn spreadsheets into powerful online applications. Stop running your business from Excel.">
+    <meta property="og:type" content="website">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #073F68;
+            --primary-orange: #FF7012;
+            --light-blue: #0F5A8C;
+            --dark-blue: #052A48;
+            --bg-light: #F8F9FA;
+            --bg-white: #FFFFFF;
+            --text-dark: #1A1A1A;
+            --text-muted: #666666;
+            --border-color: #E5E5E5;
+            --success: #10B981;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            color: var(--text-dark);
+            background: var(--bg-white);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-logo span:last-child {
+            color: var(--primary-orange);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-orange);
+        }
+
+        .btn-primary {
+            background: var(--primary-orange);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: #E65C00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 112, 18, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+            padding: 0.65rem 1.4rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-blue);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 112, 18, 0.05);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .hero .subheading {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
+
+        .hero .description {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .hero-buttons .btn-primary {
+            background: var(--primary-orange);
+        }
+
+        .hero-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .hero-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-visual {
+            margin-top: 4rem;
+            perspective: 1000px;
+        }
+
+        .transformation-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .flow-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem 1rem;
+            border-radius: 12px;
+            text-align: center;
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        .flow-card:nth-child(1) { animation-delay: 0.1s; }
+        .flow-card:nth-child(2) { animation-delay: 0.2s; }
+        .flow-card:nth-child(3) { animation-delay: 0.3s; }
+        .flow-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .flow-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .flow-card-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .flow-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-orange);
+            opacity: 0.6;
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 2rem;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--primary-blue);
+        }
+
+        section .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Problems Section */
+        .problems-section {
+            background: var(--bg-light);
+        }
+
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .problem-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-orange);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .problem-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .problem-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Transformation Section */
+        .transformation-section {
+            background: white;
+        }
+
+        .before-after {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+            align-items: center;
+        }
+
+        .before-after-column h3 {
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .before-after-column ul {
+            list-style: none;
+        }
+
+        .before-after-column li {
+            padding: 0.8rem 0;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .before-after-column li:last-child {
+            border-bottom: none;
+        }
+
+        .before-after-column.before li::before {
+            content: '✗';
+            color: #DC2626;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .before-after-column.after li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .transformation-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary-orange);
+        }
+
+        /* Services Section */
+        .services-section {
+            background: var(--bg-light);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border-top: 3px solid transparent;
+        }
+
+        .service-card:hover {
+            border-top-color: var(--primary-orange);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Excel Feature Section */
+        .excel-feature {
+            background: white;
+        }
+
+        .excel-feature-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        .excel-example {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px dashed var(--border-color);
+        }
+
+        .excel-table {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .excel-table td {
+            padding: 0.8rem;
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            background: #F0F0F0;
+        }
+
+        .excel-table td:last-child {
+            border-right: none;
+        }
+
+        .excel-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .excel-table tr:first-child td {
+            background: var(--primary-blue);
+            color: white;
+            font-weight: bold;
+        }
+
+        .excel-right h3 {
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 1rem 0;
+            padding-left: 2.5rem;
+            position: relative;
+            color: var(--text-muted);
+        }
+
+        .feature-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary-orange);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Demo Section */
+        .demo-section {
+            background: var(--bg-light);
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+        }
+
+        .demo-card-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--light-blue) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .demo-card-header h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-card-body {
+            padding: 2rem;
+        }
+
+        .demo-preview {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+        }
+
+        .demo-preview strong {
+            color: var(--primary-blue);
+        }
+
+        .demo-card .btn-primary {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Industries Section */
+        .industries-section {
+            background: white;
+        }
+
+        .industries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .industry-tag {
+            background: var(--bg-light);
+            padding: 1.5rem 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .industry-tag:hover {
+            border-color: var(--primary-orange);
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .industry-tag-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .industry-tag-name {
+            font-weight: 600;
+            color: var(--primary-blue);
+            font-size: 0.95rem;
+        }
+
+        /* Automation Tool */
+        .automation-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--light-blue) 100%);
+            color: white;
+        }
+
+        .automation-section h2 {
+            color: white;
+        }
+
+        .automation-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .automation-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .automation-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .automation-checkbox:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary-orange);
+        }
+
+        .automation-checkbox input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin-top: 2px;
+            accent-color: var(--primary-orange);
+        }
+
+        .automation-checkbox label {
+            cursor: pointer;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .automation-result {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .automation-result.show {
+            display: block;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .automation-result h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .automation-result ul {
+            list-style: none;
+            columns: 2;
+            gap: 2rem;
+        }
+
+        .automation-result li {
+            padding: 0.5rem 0 0.5rem 2rem;
+            position: relative;
+        }
+
+        .automation-result li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary-orange);
+            font-weight: bold;
+        }
+
+        /* How It Works */
+        .how-section {
+            background: var(--bg-light);
+        }
+
+        .process-timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            position: relative;
+        }
+
+        .process-step {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: var(--primary-orange);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .process-step h3 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .process-step p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            background: white;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .benefit-card {
+            padding: 2rem;
+            border-left: 4px solid var(--primary-orange);
+        }
+
+        .benefit-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .benefit-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Case Studies */
+        .case-section {
+            background: var(--bg-light);
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .case-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .case-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .case-label {
+            background: var(--primary-orange);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .case-content {
+            padding: 2rem;
+        }
+
+        .case-content h3 {
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .case-problem, .case-solution, .case-result {
+            margin-bottom: 1.5rem;
+        }
+
+        .case-problem strong, .case-solution strong, .case-result strong {
+            color: var(--primary-blue);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .case-problem p, .case-solution p, .case-result p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* SaaS Section */
+        .saas-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--light-blue) 100%);
+            color: white;
+        }
+
+        .saas-section h2 {
+            color: white;
+        }
+
+        .saas-content {
+            max-width: 900px;
+            margin: 3rem auto 0;
+        }
+
+        .saas-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 3rem 0;
+            align-items: center;
+        }
+
+        .saas-flow-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .saas-flow-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-orange);
+        }
+
+        .saas-features {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+
+        .saas-features h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .saas-features ul {
+            list-style: none;
+            columns: 2;
+            gap: 2rem;
+        }
+
+        .saas-features li {
+            padding: 0.5rem 0 0.5rem 2rem;
+            position: relative;
+        }
+
+        .saas-features li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary-orange);
+            font-weight: bold;
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            background: white;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--primary-orange);
+            transform: scale(1.05);
+            box-shadow: 0 12px 28px rgba(255, 112, 18, 0.2);
+        }
+
+        .pricing-card h3 {
+            color: var(--primary-blue);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-description {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .pricing-features {
+            text-align: left;
+            margin: 2rem 0;
+            list-style: none;
+        }
+
+        .pricing-features li {
+            padding: 0.8rem 0;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .pricing-card .btn-primary {
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        /* Assessment Section */
+        .assessment-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--light-blue) 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .assessment-section h2 {
+            color: white;
+        }
+
+        .assessment-content {
+            max-width: 700px;
+            margin: 2rem auto;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .assessment-cta {
+            display: inline-block;
+        }
+
+        /* Lead Form */
+        .form-section {
+            background: var(--bg-light);
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 3rem auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-blue);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 3px rgba(255, 112, 18, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .checkbox-item input {
+            width: auto;
+            accent-color: var(--primary-orange);
+        }
+
+        .checkbox-item label {
+            margin-bottom: 0;
+            font-weight: 400;
+        }
+
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            background: var(--bg-light);
+            border: 2px dashed var(--border-color);
+            border-radius: 6px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-orange);
+            background: rgba(255, 112, 18, 0.05);
+        }
+
+        .file-upload input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-blue);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem 0;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-orange);
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo span:last-child {
+            color: var(--primary-orange);
+        }
+
+        .footer-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-orange);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links.active {
+                display: flex;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: white;
+                border-bottom: 1px solid var(--border-color);
+                padding: 1rem 2rem;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero .subheading {
+                font-size: 1.2rem;
+            }
+
+            .transformation-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .before-after {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .excel-feature-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            section h2 {
+                font-size: 1.8rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .hero-buttons .btn-primary,
+            .hero-buttons .btn-secondary {
+                width: 100%;
+            }
+
+            .automation-result ul {
+                columns: 1;
+            }
+
+            .saas-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+        }
+
+        /* Modal for demos */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--light-blue) 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .demo-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .demo-stat {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-orange);
+        }
+
+        .demo-stat-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .demo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        .demo-table thead {
+            background: var(--bg-light);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .demo-table th {
+            padding: 1rem;
+            text-align: left;
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .demo-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .demo-table tr:hover {
+            background: var(--bg-light);
+        }
+
+        /* Utility classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-3 {
+            margin-top: 3rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="nav-logo">
+            <span>iHub</span><span>SA</span>
+        </a>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#solutions">Solutions</a></li>
+            <li><a href="#how">How It Works</a></li>
+            <li><a href="#industries">Industries</a></li>
+            <li><a href="#case-studies">Our Work</a></li>
+            <li><a href="#saas">SaaS</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><button class="btn-primary" onclick="scrollTo('assessment')">Book a Free Assessment</button></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Stop Running Your Business From Spreadsheets.</h1>
+            <p class="subheading">Turn your Excel files, paperwork and manual processes into powerful online applications built around the way your business actually works.</p>
+            <p class="description">iHubSA designs and develops practical business applications, databases, dashboards and SaaS solutions that help organisations work smarter, reduce administration and gain control of their information.</p>
+
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="scrollTo('contact')">See What We Can Build</button>
+                <button class="btn-secondary hero-secondary" onclick="scrollTo('assessment')">Book a Free Digital Assessment</button>
+            </div>
+
+            <div class="hero-visual">
+                <div class="transformation-flow">
+                    <div class="flow-card">
+                        <div class="flow-card-icon">📊</div>
+                        <div class="flow-card-label">Excel File</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-card">
+                        <div class="flow-card-icon">💾</div>
+                        <div class="flow-card-label">Database</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-card">
+                        <div class="flow-card-icon">🎯</div>
+                        <div class="flow-card-label">Application</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-card">
+                        <div class="flow-card-icon">📈</div>
+                        <div class="flow-card-label">Dashboard</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problems Section -->
+    <section class="problems-section" id="problems">
+        <div class="container">
+            <h2>Is Your Business Still Running on Manual Processes?</h2>
+            <p class="section-subtitle">Many organisations depend on disconnected systems that become inefficient as they grow. Sound familiar?</p>
+
+            <div class="problems-grid">
+                <div class="problem-card">
+                    <h3>📑 Excel Everywhere</h3>
+                    <p>Important business information is spread across multiple spreadsheets with no central source of truth.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>⏱️ Manual Administration</h3>
+                    <p>Employees spend hours capturing, checking and transferring information between systems.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>👁️ No Real-Time Visibility</h3>
+                    <p>Management cannot easily see what is happening across the business or access live information.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>⚠️ Human Error</h3>
+                    <p>Duplicate data entry and manual calculations create unnecessary risk and inconsistency.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>🔗 Disconnected Systems</h3>
+                    <p>Critical business information is trapped inside emails, spreadsheets and documents.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>⏳ Slow Reporting</h3>
+                    <p>Management reports require hours of manual preparation instead of appearing in real-time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transformation Section -->
+    <section class="transformation-section" id="transformation">
+        <div class="container">
+            <h2>From Spreadsheet to Smart Business System</h2>
+            <p class="section-subtitle">See how iHubSA transforms disconnected manual processes into integrated digital solutions.</p>
+
+            <div class="before-after">
+                <div class="before-after-column before">
+                    <h3>Before</h3>
+                    <ul>
+                        <li>Multiple Excel files</li>
+                        <li>Paper-based processes</li>
+                        <li>WhatsApp communications</li>
+                        <li>Email attachments</li>
+                        <li>Manual calculations</li>
+                        <li>Different file versions</li>
+                        <li>Manual data entry</li>
+                        <li>Slow reporting</li>
+                        <li>No audit trail</li>
+                    </ul>
+                </div>
+                <div class="transformation-arrow">
+                    <span style="font-size: 2rem;">→<br>iHubSA<br>→</span>
+                </div>
+                <div class="before-after-column after">
+                    <h3>After</h3>
+                    <ul>
+                        <li>Centralised database</li>
+                        <li>Online application</li>
+                        <li>Automated workflows</li>
+                        <li>Secure document storage</li>
+                        <li>Automated calculations</li>
+                        <li>Single source of truth</li>
+                        <li>Automatic data validation</li>
+                        <li>Live dashboards</li>
+                        <li>Complete audit trail</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section" id="solutions">
+        <div class="container">
+            <h2>What Can We Build For Your Business?</h2>
+            <p class="section-subtitle">From simple digitalisation to complete business transformation, we build solutions around your needs.</p>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">📊 → 🎯</div>
+                    <h3>Excel → Online Applications</h3>
+                    <p>Turn complex spreadsheets into secure, multi-user web applications with automated workflows and real-time data.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🏢</div>
+                    <h3>Business Management Systems</h3>
+                    <p>Applications to manage projects, customers, employees, contractors, inventory, documents and complex workflows.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🚀</div>
+                    <h3>Custom SaaS Platforms</h3>
+                    <p>Build subscription-based software products for your organisation or market with recurring revenue potential.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📈</div>
+                    <h3>Dashboards & Business Intelligence</h3>
+                    <p>Turn raw business data into live dashboards and meaningful management information at your fingertips.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📝</div>
+                    <h3>Online Forms & Data Capture</h3>
+                    <p>Replace paper forms and manual data collection with intelligent digital forms and automated data validation.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔐</div>
+                    <h3>Customer & Contractor Portals</h3>
+                    <p>Give customers, suppliers or contractors secure access to the information and functionality they need.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">⚙️</div>
+                    <h3>Workflow Automation</h3>
+                    <p>Reduce repetitive administration by automating approvals, notifications, calculations and business processes.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💾</div>
+                    <h3>Database Solutions</h3>
+                    <p>Centralise business information in a secure, structured and scalable database that grows with your business.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Excel Feature Section -->
+    <section class="excel-feature">
+        <div class="container">
+            <h2>Have an Excel Spreadsheet That Has Become Too Complicated?</h2>
+            <p class="section-subtitle">You may already have the blueprint for your next business application.</p>
+
+            <div class="excel-feature-content">
+                <div class="excel-left">
+                    <div class="excel-example">
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">📄 Your Existing Spreadsheet</p>
+                        <table class="excel-table">
+                            <tr>
+                                <td>Customer</td>
+                                <td>Project</td>
+                                <td>Material</td>
+                                <td>Qty</td>
+                                <td>Cost</td>
+                                <td>Labour</td>
+                                <td>Status</td>
+                            </tr>
+                            <tr>
+                                <td>ABC Corp</td>
+                                <td>Renovation</td>
+                                <td>Wood</td>
+                                <td>100</td>
+                                <td>R5,000</td>
+                                <td>R3,000</td>
+                                <td>In Progress</td>
+                            </tr>
+                            <tr>
+                                <td>XYZ Ltd</td>
+                                <td>Office Setup</td>
+                                <td>Furniture</td>
+                                <td>50</td>
+                                <td>R12,000</td>
+                                <td>R2,000</td>
+                                <td>Complete</td>
+                            </tr>
+                        </table>
+                        <p style="color: #999; font-size: 0.85rem; margin-top: 1rem;">Plus manual data entry, version control problems, permission issues...</p>
+                    </div>
+                </div>
+
+                <div class="excel-right">
+                    <h3>We Can Transform It Into:</h3>
+                    <ul class="feature-list">
+                        <li>Customer management system</li>
+                        <li>Project tracking dashboard</li>
+                        <li>Materials inventory</li>
+                        <li>Automated budget tracking</li>
+                        <li>Real-time project status</li>
+                        <li>Labour cost analysis</li>
+                        <li>Automated reporting</li>
+                        <li>Multi-user access control</li>
+                        <li>Mobile access</li>
+                        <li>Document storage</li>
+                        <li>Workflow automation</li>
+                        <li>Customer portal</li>
+                    </ul>
+                    <button class="btn-primary" style="margin-top: 2rem; width: 100%;" onclick="scrollTo('contact')">Show Us Your Spreadsheet</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section">
+        <div class="container">
+            <h2>Don't Just Take Our Word For It. See What It Looks Like.</h2>
+            <p class="section-subtitle">Interactive demonstrations of applications we can build for your business.</p>
+
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h3>Project Management</h3>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Track projects, budgets and team productivity</p>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="demo-preview">
+                            <strong>Active Projects:</strong> 12 projects<br>
+                            <strong>Total Budget:</strong> R850,000<br>
+                            <strong>Spent:</strong> R620,000 (73%)<br>
+                            <strong>On Track:</strong> 9 projects<br>
+                            <strong>Outstanding Tasks:</strong> 47
+                        </div>
+                        <button class="btn-primary" onclick="openDemo('project')">View Demo</button>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h3>Contractor Management</h3>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Manage contractor profiles, compliance and approvals</p>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="demo-preview">
+                            <strong>Active Contractors:</strong> 24<br>
+                            <strong>Compliance Rate:</strong> 95%<br>
+                            <strong>Pending Approvals:</strong> 3<br>
+                            <strong>Documents Verified:</strong> 78/85<br>
+                            <strong>Last Updated:</strong> Today
+                        </div>
+                        <button class="btn-primary" onclick="openDemo('contractor')">View Demo</button>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h3>Inventory Management</h3>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Track stock, purchases and supplier orders</p>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="demo-preview">
+                            <strong>Total Items:</strong> 1,247<br>
+                            <strong>Low Stock Alerts:</strong> 12<br>
+                            <strong>Pending Orders:</strong> 8<br>
+                            <strong>Suppliers Active:</strong> 23<br>
+                            <strong>Stock Value:</strong> R2.3M
+                        </div>
+                        <button class="btn-primary" onclick="openDemo('inventory')">View Demo</button>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h3>Request for Quote</h3>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Manage RFQs and supplier responses</p>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="demo-preview">
+                            <strong>Active RFQs:</strong> 6<br>
+                            <strong>Supplier Responses:</strong> 18<br>
+                            <strong>Closing This Week:</strong> 2<br>
+                            <strong>Average Response Time:</strong> 2.4 days<br>
+                            <strong>Approval Rate:</strong> 67%
+                        </div>
+                        <button class="btn-primary" onclick="openDemo('rfq')">View Demo</button>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h3>Donor & NGO Management</h3>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Track projects, donors, beneficiaries and funding</p>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="demo-preview">
+                            <strong>Active Projects:</strong> 8<br>
+                            <strong>Donors:</strong> 12<br>
+                            <strong>Beneficiaries:</strong> 2,340<br>
+                            <strong>Total Funding:</strong> R4.2M<br>
+                            <strong>Funds Utilised:</strong> 78%
+                        </div>
+                        <button class="btn-primary" onclick="openDemo('npo')">View Demo</button>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h3>Event Management</h3>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Manage events, registrations and operations</p>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="demo-preview">
+                            <strong>Upcoming Events:</strong> 5<br>
+                            <strong>Total Registrations:</strong> 340<br>
+                            <strong>Paid:</strong> 285<br>
+                            <strong>Outstanding:</strong> 55<br>
+                            <strong>Revenue:</strong> R68,500
+                        </div>
+                        <button class="btn-primary" onclick="openDemo('event')">View Demo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industries Section -->
+    <section class="industries-section" id="industries">
+        <div class="container">
+            <h2>Solutions For Different Industries</h2>
+            <p class="section-subtitle">iHubSA has experience building solutions for diverse sectors and organisation types.</p>
+
+            <div class="industries-grid">
+                <div class="industry-tag">
+                    <div class="industry-tag-icon">🏗️</div>
+                    <div class="industry-tag-name">Construction</div>
+                </div>
+                <div class="industry-tag">
+                    <div class="industry-tag-icon">🏭</div>
+                    <div class="industry-tag-name">Manufacturing</div>
+                </div>
+                <div class="industry-tag">
+                    <div class="industry-tag-icon">💼</div>
+                    <div class="industry-tag-name">Professional Services</div>
+                </div>
+                <div class="industry-tag">
+                    <div class="industry-tag-icon">🤝</div>
+                    <div class="industry-tag-name">Non-Profit Organisations</div>
+                </div>
+                <div class="industry-tag">
+                    <div class="industry-tag-icon">🎓</div>
+                    <div class="industry-tag-name">Education</div>
+                </div>
+                <div class="industry-tag">
+                    <div class="industry-tag-icon">🎪</div>
+                    <div class="industry-tag-name">Events & Operations</div>
+                </div>
+                <div class="industry-tag">
+                    <div class="industry-tag-icon">🏠</div>
+                    <div class="industry-tag-name">Property</div>
+                </div>
+                <div class="industry-tag">
+                    <div class="industry-tag-icon">🔧</div>
+                    <div class="industry-tag-name">Facilities Management</div>
+                </div>
+                <div class="industry-tag">
+                    <div class="industry-tag-icon">👥</div>
+                    <div class="industry-tag-name">Contractor Management</div>
+                </div>
+                <div class="industry-tag">
+                    <div class="industry-tag-icon">📊</div>
+                    <div class="industry-tag-name">SMB & Retail</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Automation Tool Section -->
+    <section class="automation-section">
+        <div class="automation-container">
+            <h2>What Could We Automate In Your Business?</h2>
+            <p class="section-subtitle">Select the problems your business faces, and we'll show you what iHubSA could build for you.</p>
+
+            <div class="automation-options">
+                <label class="automation-checkbox">
+                    <input type="checkbox" class="automation-check" value="excel">
+                    <label>We use too much Excel</label>
+                </label>
+                <label class="automation-checkbox">
+                    <input type="checkbox" class="automation-check" value="whatsapp">
+                    <label>We communicate too much via WhatsApp</label>
+                </label>
+                <label class="automation-checkbox">
+                    <input type="checkbox" class="automation-check" value="paper">
+                    <label>We still use paper forms</label>
+                </label>
+                <label class="automation-checkbox">
+                    <input type="checkbox" class="automation-check" value="manual-data">
+                    <label>We manually capture data</label>
+                </label>
+                <label class="automation-checkbox">
+                    <input type="checkbox" class="automation-check" value="reports">
+                    <label>We manually create reports</label>
+                </label>
+                <label class="automation-checkbox">
+                    <input type="checkbox" class="automation-check" value="database">
+                    <label>We need a database</label>
+                </label>
+                <label class="automation-checkbox">
+                    <input type="checkbox" class="automation-check" value="dashboard">
+                    <label>We need a dashboard</label>
+                </label>
+                <label class="automation-checkbox">
+                    <input type="checkbox" class="automation-check" value="customer-portal">
+                    <label>We need a customer portal</label>
+                </label>
+                <label class="automation-checkbox">
+                    <input type="checkbox" class="automation-check" value="contractor-portal">
+                    <label>We need a contractor portal</label>
+                </label>
+                <label class="automation-checkbox">
+                    <input type="checkbox" class="automation-check" value="approvals">
+                    <label>We need automated approvals</label>
+                </label>
+                <label class="automation-checkbox">
+                    <input type="checkbox" class="automation-check" value="software">
+                    <label>We need custom software</label>
+                </label>
+                <label class="automation-checkbox">
+                    <input type="checkbox" class="automation-check" value="saas">
+                    <label>We want to build a SaaS</label>
+                </label>
+            </div>
+
+            <div class="automation-result" id="automationResult">
+                <h4>You May Benefit From a Custom Business Application</h4>
+                <p>Based on your selections, iHubSA could help you create:</p>
+                <ul id="resultList"></ul>
+                <button class="btn-primary" style="margin-top: 2rem; width: 100%;" onclick="scrollTo('contact')">Discuss Your Requirements</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-section" id="how">
+        <div class="container">
+            <h2>How It Works</h2>
+            <p class="section-subtitle">A straightforward process from discovery to launch and beyond.</p>
+
+            <div class="process-timeline">
+                <div class="process-step">
+                    <div class="step-number">01</div>
+                    <h3>Discover</h3>
+                    <p>We understand your business, current processes and pain points. We listen to what's working and what isn't.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">02</div>
+                    <h3>Design</h3>
+                    <p>We map your workflows and design an application specifically around your requirements and the way you work.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">03</div>
+                    <h3>Build</h3>
+                    <p>We develop, test and refine your digital solution. You see progress and can provide feedback throughout.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">04</div>
+                    <h3>Launch & Grow</h3>
+                    <p>We deploy your system and continue improving it as your business evolves and new opportunities appear.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="container">
+            <h2>Why iHubSA</h2>
+            <p class="section-subtitle">Technology should work for your business, not the other way around.</p>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <h3>Built Around You</h3>
+                    <p>We don't force your business into a generic system. We build the software around the way you actually work.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Practical</h3>
+                    <p>We focus on solving real operational problems that impact your productivity, not features that sound impressive.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Scalable</h3>
+                    <p>Start with what you need and expand as your business grows. Your application evolves with your requirements.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Accessible</h3>
+                    <p>Applications work seamlessly across desktop, tablet and mobile devices so your team can work from anywhere.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Data Driven</h3>
+                    <p>Turn business information into useful management insight. Make decisions based on live data, not guesswork.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Ongoing Development</h3>
+                    <p>Your application doesn't become obsolete. We continue improving it as your business changes and new needs arise.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies Section -->
+    <section class="case-section" id="case-studies">
+        <div class="container">
+            <h2>Real Problems. Digital Solutions.</h2>
+            <p class="section-subtitle">Examples of how iHubSA has transformed business operations.</p>
+
+            <div class="case-grid">
+                <div class="case-card">
+                    <div class="case-label">Example Project</div>
+                    <div class="case-content">
+                        <h3>Replacing Complex Excel Workbooks</h3>
+                        <div class="case-problem">
+                            <strong>Problem</strong>
+                            <p>A business was managing multiple operational processes across Excel spreadsheets. Data was duplicated, versions conflicted, and reporting was manual and slow.</p>
+                        </div>
+                        <div class="case-solution">
+                            <strong>Solution</strong>
+                            <p>We built a centralised web application with a database, automated workflows, live dashboards and integrated reporting.</p>
+                        </div>
+                        <div class="case-result">
+                            <strong>Result</strong>
+                            <p>One central source of information with real-time visibility. Administration time reduced by 60%. Reporting now automated.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-card">
+                    <div class="case-label">Example Project</div>
+                    <div class="case-content">
+                        <h3>Digitising Manual Data Capture</h3>
+                        <div class="case-problem">
+                            <strong>Problem</strong>
+                            <p>A service organisation was collecting data manually through paper forms and spreadsheets, with significant data entry delays and errors.</p>
+                        </div>
+                        <div class="case-solution">
+                            <strong>Solution</strong>
+                            <p>We created an online form system that captured data automatically, validated it, and populated a database directly.</p>
+                        </div>
+                        <div class="case-result">
+                            <strong>Result</strong>
+                            <p>Data capture errors eliminated. Processing time reduced from days to minutes. Data immediately available for reporting.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-card">
+                    <div class="case-label">Example Project</div>
+                    <div class="case-content">
+                        <h3>Creating a Contractor Portal</h3>
+                        <div class="case-problem">
+                            <strong>Problem</strong>
+                            <p>Managing contractor information, documents and compliance was slow. The organisation couldn't see who was compliant or when documents were expiring.</p>
+                        </div>
+                        <div class="case-solution">
+                            <strong>Solution</strong>
+                            <p>We built a contractor management portal where contractors update their own profiles and upload documents, with automatic compliance tracking.</p>
+                        </div>
+                        <div class="case-result">
+                            <strong>Result</strong>
+                            <p>Compliance rate improved from 60% to 95%. Admin time reduced by 80%. Instant visibility of contractor status.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SaaS Section -->
+    <section class="saas-section" id="saas">
+        <div class="saas-content">
+            <h2>Have An Idea For A SaaS Product?</h2>
+            <p class="section-subtitle">Perhaps you've identified a problem that thousands of businesses have. iHubSA can turn the idea into reality.</p>
+
+            <div class="saas-flow">
+                <div class="saas-flow-item">Idea</div>
+                <div class="saas-flow-arrow">↓</div>
+                <div class="saas-flow-item">Prototype</div>
+                <div class="saas-flow-arrow">↓</div>
+                <div class="saas-flow-item">MVP</div>
+                <div class="saas-flow-arrow">↓</div>
+                <div class="saas-flow-item">SaaS Platform</div>
+                <div class="saas-flow-arrow">↓</div>
+                <div class="saas-flow-item">Users & Revenue</div>
+            </div>
+
+            <div class="saas-features">
+                <h4>iHubSA Can Assist With:</h4>
+                <ul>
+                    <li>Product design & UX</li>
+                    <li>Database architecture</li>
+                    <li>Web application development</li>
+                    <li>User authentication</li>
+                    <li>Dashboards & reporting</li>
+                    <li>Subscription management</li>
+                    <li>Payment processing integration</li>
+                    <li>API development</li>
+                    <li>Cloud deployment</li>
+                    <li>Ongoing support & scaling</li>
+                </ul>
+            </div>
+
+            <button class="btn-primary" style="width: 100%; padding: 1rem; font-size: 1rem;" onclick="scrollTo('contact')">Discuss Your SaaS Idea</button>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section">
+        <div class="container">
+            <h2>Flexible Solutions For Every Stage</h2>
+            <p class="section-subtitle">Choose the package that matches your business needs. No lock-in. Scale as you grow.</p>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Digital Start</h3>
+                    <p class="pricing-description">For businesses wanting to digitalise a single process or workflow.</p>
+                    <ul class="pricing-features">
+                        <li>Online forms & data capture</li>
+                        <li>Simple database</li>
+                        <li>Basic automated workflow</li>
+                        <li>Mobile friendly</li>
+                        <li>User accounts & permissions</li>
+                    </ul>
+                    <button class="btn-primary" onclick="scrollTo('contact')">Talk To Us</button>
+                </div>
+
+                <div class="pricing-card featured">
+                    <h3>Business Application</h3>
+                    <p class="pricing-description">For organisations replacing spreadsheets with a complete online system.</p>
+                    <ul class="pricing-features">
+                        <li>Centralised database</li>
+                        <li>Multi-user application</li>
+                        <li>Live dashboards</li>
+                        <li>Automated workflows</li>
+                        <li>User roles & permissions</li>
+                        <li>Reporting & exports</li>
+                        <li>Mobile access</li>
+                        <li>Document storage</li>
+                    </ul>
+                    <button class="btn-primary" onclick="scrollTo('contact')">Talk To Us</button>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Custom SaaS</h3>
+                    <p class="pricing-description">For organisations building a complete software product.</p>
+                    <ul class="pricing-features">
+                        <li>Multi-tenant platform</li>
+                        <li>Customer portal</li>
+                        <li>Subscription management</li>
+                        <li>Advanced permissions</li>
+                        <li>Custom workflows</li>
+                        <li>API development</li>
+                        <li>Third-party integrations</li>
+                        <li>Ongoing support</li>
+                    </ul>
+                    <button class="btn-primary" onclick="scrollTo('contact')">Talk To Us</button>
+                </div>
+            </div>
+
+            <p class="text-center mt-3" style="color: #666; font-size: 1rem;">
+                Every project is unique. We'll discuss your requirements and provide a transparent proposal tailored to your business.
+            </p>
+        </div>
+    </section>
+
+    <!-- How to Works -->
+    <section class="assessment-section" id="assessment">
+        <div class="container">
+            <h2>Find Out What Your Business Could Automate</h2>
+            <div class="assessment-content">
+                <p>We offer a <strong>FREE 30-MINUTE DIGITAL BUSINESS ASSESSMENT</strong></p>
+                <p>We'll look at your current processes and identify opportunities to digitise, automate, centralise, simplify and improve your business.</p>
+            </div>
+            <button class="btn-primary" onclick="scrollTo('contact')">Book My Free Assessment</button>
+        </div>
+    </section>
+
+    <!-- Contact / Lead Form Section -->
+    <section class="form-section" id="contact">
+        <div class="container">
+            <h2 style="margin-bottom: 0.5rem;">Let's Explore Your Solution</h2>
+            <p class="section-subtitle" style="margin-bottom: 2rem;">Tell us about your business and what you're trying to achieve. We'll discuss how iHubSA can help.</p>
+
+            <div class="form-container">
+                <form id="leadForm" onsubmit="handleFormSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Your Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company">Company Name *</label>
+                        <input type="text" id="company" name="company" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="industry">Industry *</label>
+                        <select id="industry" name="industry" required>
+                            <option value="">Select your industry</option>
+                            <option value="construction">Construction</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="professional-services">Professional Services</option>
+                            <option value="nonprofit">Non-Profit Organisation</option>
+                            <option value="education">Education</option>
+                            <option value="events">Events & Operations</option>
+                            <option value="property">Property</option>
+                            <option value="facilities">Facilities Management</option>
+                            <option value="retail">Retail & SMB</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="current-systems">What are you currently using? *</label>
+                        <select id="current-systems" name="current-systems" required>
+                            <option value="">Select what you use</option>
+                            <option value="excel">Primarily Excel</option>
+                            <option value="paper">Paper-based processes</option>
+                            <option value="whatsapp">WhatsApp & Email</option>
+                            <option value="existing-software">Existing software</option>
+                            <option value="multiple">Multiple disconnected systems</option>
+                            <option value="mix">A mix of everything</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="problem">What problem are you trying to solve? *</label>
+                        <textarea id="problem" name="problem" required placeholder="Tell us about the challenges your business faces..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What would you like to build?</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="app" name="build" value="business-app">
+                                <label for="app">Business Application</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="db" name="build" value="database">
+                                <label for="db">Database</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="dash" name="build" value="dashboard">
+                                <label for="dash">Dashboard</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="form" name="build" value="forms">
+                                <label for="form">Online Forms</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cp" name="build" value="customer-portal">
+                                <label for="cp">Customer Portal</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="op" name="build" value="contractor-portal">
+                                <label for="op">Contractor Portal</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="saas" name="build" value="saas">
+                                <label for="saas">SaaS Product</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="automation" name="build" value="automation">
+                                <label for="automation">Workflow Automation</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file">Upload an Excel Spreadsheet (Optional)</label>
+                        <div class="file-upload">
+                            <input type="file" id="file" name="file" accept=".xlsx,.xls,.csv">
+                            <p style="margin: 0; color: #666;">📎 Drop your file here or click to browse</p>
+                            <p style="margin: 0.5rem 0 0; color: #999; font-size: 0.85rem;">Excel, CSV or similar files up to 10MB</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem; font-size: 1rem; margin-top: 2rem;">Let's Explore Your Solution</button>
+                    <p style="text-align: center; color: #999; font-size: 0.85rem; margin-top: 1rem;">We typically respond within 24 hours. For urgent inquiries, [PHONE NUMBER]</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">iHub<span>SA</span></div>
+                <p class="footer-description">Digital transformation and SaaS solutions that turn business problems into competitive advantages.</p>
+                <div class="social-links">
+                    <a href="#" title="LinkedIn">in</a>
+                    <a href="#" title="Twitter">𝕏</a>
+                    <a href="#" title="GitHub">◆</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Solutions</h4>
+                <ul>
+                    <li><a href="#solutions">Business Applications</a></li>
+                    <li><a href="#solutions">Dashboards</a></li>
+                    <li><a href="#solutions">SaaS Development</a></li>
+                    <li><a href="#solutions">Workflow Automation</a></li>
+                    <li><a href="#solutions">Database Solutions</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#how">How It Works</a></li>
+                    <li><a href="#case-studies">Our Work</a></li>
+                    <li><a href="#industries">Industries</a></li>
+                    <li><a href="#assessment">Free Assessment</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:[COMPANY_EMAIL]">Email: [COMPANY_EMAIL]</a></li>
+                    <li><a href="tel:[PHONE_NUMBER]">Phone: [PHONE_NUMBER]</a></li>
+                    <li><a href="#">Address: [ADDRESS]</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 iHubSA. All rights reserved. | <a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Privacy Policy</a> | <a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Terms & Conditions</a> | <a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">POPIA</a></p>
+        </div>
+    </footer>
+
+    <!-- Modals for Demos -->
+    <div class="modal" id="demoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="demoTitle">Demo Application</h2>
+                <button class="modal-close" onclick="closeDemo()">×</button>
+            </div>
+            <div class="modal-body" id="demoBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when link is clicked
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Scroll to section
+        function scrollTo(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+                navLinks.classList.remove('active');
+            }
+        }
+
+        // Automation tool
+        document.querySelectorAll('.automation-check').forEach(checkbox => {
+            checkbox.addEventListener('change', updateAutomationResult);
+        });
+
+        function updateAutomationResult() {
+            const checked = Array.from(document.querySelectorAll('.automation-check:checked')).map(c => c.value);
+            const resultDiv = document.getElementById('automationResult');
+
+            if (checked.length === 0) {
+                resultDiv.classList.remove('show');
+                return;
+            }
+
+            const features = {
+                'excel': 'Centralised Database',
+                'whatsapp': 'Secure Communication Portal',
+                'paper': 'Digital Forms & Data Capture',
+                'manual-data': 'Automated Data Entry',
+                'reports': 'Live Dashboard & Reporting',
+                'database': 'Structured Data Storage',
+                'dashboard': 'Business Intelligence & Insights',
+                'customer-portal': 'Customer Self-Service Portal',
+                'contractor-portal': 'Contractor Management Portal',
+                'approvals': 'Automated Approval Workflows',
+                'software': 'Custom Business Application',
+                'saas': 'Multi-Tenant SaaS Platform'
+            };
+
+            const resultFeatures = checked.map(c => features[c] || c).filter((v, i, a) => a.indexOf(v) === i);
+            const resultList = document.getElementById('resultList');
+            resultList.innerHTML = resultFeatures.map(f => `<li>${f}</li>`).join('');
+
+            resultDiv.classList.add('show');
+        }
+
+        // Demo Modals
+        const demoContent = {
+            'project': {
+                title: 'Project Management System',
+                content: `
+                    <div class="demo-dashboard">
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Active Projects</div>
+                            <div class="demo-stat-value">12</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Total Budget</div>
+                            <div class="demo-stat-value">R850K</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Spent (73%)</div>
+                            <div class="demo-stat-value">R620K</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">On Track</div>
+                            <div class="demo-stat-value">9</div>
+                        </div>
+                    </div>
+
+                    <table class="demo-table">
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Client</th>
+                                <th>Budget</th>
+                                <th>Spent</th>
+                                <th>Progress</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Website Redesign</strong></td>
+                                <td>ABC Corp</td>
+                                <td>R75,000</td>
+                                <td>R62,000 (83%)</td>
+                                <td>85%</td>
+                                <td><span style="background: #10B981; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">On Track</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>System Integration</strong></td>
+                                <td>XYZ Ltd</td>
+                                <td>R150,000</td>
+                                <td>R98,000 (65%)</td>
+                                <td>60%</td>
+                                <td><span style="background: #3B82F6; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">In Progress</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mobile App Dev</strong></td>
+                                <td>DEF Inc</td>
+                                <td>R200,000</td>
+                                <td>R125,000 (63%)</td>
+                                <td>70%</td>
+                                <td><span style="background: #3B82F6; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">In Progress</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Database Migration</strong></td>
+                                <td>GHI Co</td>
+                                <td>R100,000</td>
+                                <td>R95,000 (95%)</td>
+                                <td>95%</td>
+                                <td><span style="background: #10B981; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">On Track</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `
+            },
+            'contractor': {
+                title: 'Contractor Management Portal',
+                content: `
+                    <div class="demo-dashboard">
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Active Contractors</div>
+                            <div class="demo-stat-value">24</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Compliance Rate</div>
+                            <div class="demo-stat-value">95%</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Pending Approvals</div>
+                            <div class="demo-stat-value">3</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Documents Verified</div>
+                            <div class="demo-stat-value">78/85</div>
+                        </div>
+                    </div>
+
+                    <table class="demo-table">
+                        <thead>
+                            <tr>
+                                <th>Contractor</th>
+                                <th>Specialisation</th>
+                                <th>Status</th>
+                                <th>Compliance</th>
+                                <th>Last Updated</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>ABC Construction</strong></td>
+                                <td>General Building</td>
+                                <td><span style="background: #10B981; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">Active</span></td>
+                                <td>✓ Compliant</td>
+                                <td>2 days ago</td>
+                            </tr>
+                            <tr>
+                                <td><strong>XYZ Electrical</strong></td>
+                                <td>Electrical Work</td>
+                                <td><span style="background: #10B981; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">Active</span></td>
+                                <td>⚠ Review Needed</td>
+                                <td>5 days ago</td>
+                            </tr>
+                            <tr>
+                                <td><strong>DEF Plumbing</strong></td>
+                                <td>Plumbing Services</td>
+                                <td><span style="background: #10B981; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">Active</span></td>
+                                <td>✓ Compliant</td>
+                                <td>Today</td>
+                            </tr>
+                            <tr>
+                                <td><strong>GHI Landscaping</strong></td>
+                                <td>Landscaping</td>
+                                <td><span style="background: #EF4444; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">Pending</span></td>
+                                <td>✗ Incomplete</td>
+                                <td>Awaiting docs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `
+            },
+            'inventory': {
+                title: 'Inventory Management System',
+                content: `
+                    <div class="demo-dashboard">
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Total Items</div>
+                            <div class="demo-stat-value">1,247</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Low Stock Alerts</div>
+                            <div class="demo-stat-value">12</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Pending Orders</div>
+                            <div class="demo-stat-value">8</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Stock Value</div>
+                            <div class="demo-stat-value">R2.3M</div>
+                        </div>
+                    </div>
+
+                    <table class="demo-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>SKU</th>
+                                <th>Current Stock</th>
+                                <th>Min Level</th>
+                                <th>Status</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Office Chairs</strong></td>
+                                <td>OFC-CH-001</td>
+                                <td>45</td>
+                                <td>20</td>
+                                <td><span style="background: #10B981; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">OK</span></td>
+                                <td>R22,500</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Printer Paper (Reams)</strong></td>
+                                <td>SUP-PA-001</td>
+                                <td>8</td>
+                                <td>20</td>
+                                <td><span style="background: #EF4444; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">LOW</span></td>
+                                <td>R960</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Toner Cartridges</strong></td>
+                                <td>SUP-TON-001</td>
+                                <td>3</td>
+                                <td>10</td>
+                                <td><span style="background: #EF4444; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">LOW</span></td>
+                                <td>R1,500</td>
+                            </tr>
+                            <tr>
+                                <td><strong>USB Flash Drives</strong></td>
+                                <td>TECH-USB-001</td>
+                                <td>67</td>
+                                <td>30</td>
+                                <td><span style="background: #10B981; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">OK</span></td>
+                                <td>R6,700</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `
+            },
+            'rfq': {
+                title: 'Request for Quote Management',
+                content: `
+                    <div class="demo-dashboard">
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Active RFQs</div>
+                            <div class="demo-stat-value">6</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Supplier Responses</div>
+                            <div class="demo-stat-value">18</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Closing This Week</div>
+                            <div class="demo-stat-value">2</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Avg Response Time</div>
+                            <div class="demo-stat-value">2.4 days</div>
+                        </div>
+                    </div>
+
+                    <table class="demo-table">
+                        <thead>
+                            <tr>
+                                <th>RFQ</th>
+                                <th>Description</th>
+                                <th>Responses</th>
+                                <th>Closing Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>RFQ-2026-0145</strong></td>
+                                <td>Office Furniture</td>
+                                <td>4</td>
+                                <td>Sept 5</td>
+                                <td><span style="background: #3B82F6; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>RFQ-2026-0146</strong></td>
+                                <td>IT Equipment</td>
+                                <td>3</td>
+                                <td>Sept 2</td>
+                                <td><span style="background: #EF4444; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">CLOSING SOON</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>RFQ-2026-0144</strong></td>
+                                <td>Professional Services</td>
+                                <td>5</td>
+                                <td>Aug 30</td>
+                                <td><span style="background: #10B981; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">CLOSED</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>RFQ-2026-0147</strong></td>
+                                <td>Maintenance Services</td>
+                                <td>2</td>
+                                <td>Sept 12</td>
+                                <td><span style="background: #3B82F6; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">Active</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `
+            },
+            'npo': {
+                title: 'NPO Donor & Project Management',
+                content: `
+                    <div class="demo-dashboard">
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Active Projects</div>
+                            <div class="demo-stat-value">8</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Donors</div>
+                            <div class="demo-stat-value">12</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Beneficiaries</div>
+                            <div class="demo-stat-value">2,340</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Funds Utilised</div>
+                            <div class="demo-stat-value">78%</div>
+                        </div>
+                    </div>
+
+                    <table class="demo-table">
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Donor</th>
+                                <th>Funding</th>
+                                <th>Spent</th>
+                                <th>Beneficiaries</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Community Skills Training</strong></td>
+                                <td>GlobalAid Foundation</td>
+                                <td>R400,000</td>
+                                <td>R320,000 (80%)</td>
+                                <td>240</td>
+                                <td><span style="background: #3B82F6; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>School Feeding Program</strong></td>
+                                <td>Local Business</td>
+                                <td>R150,000</td>
+                                <td>R120,000 (80%)</td>
+                                <td>850</td>
+                                <td><span style="background: #3B82F6; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Healthcare Initiative</strong></td>
+                                <td>Health NGO</td>
+                                <td>R600,000</td>
+                                <td>R450,000 (75%)</td>
+                                <td>1,250</td>
+                                <td><span style="background: #3B82F6; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">Active</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `
+            },
+            'event': {
+                title: 'Event Management System',
+                content: `
+                    <div class="demo-dashboard">
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Upcoming Events</div>
+                            <div class="demo-stat-value">5</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Total Registrations</div>
+                            <div class="demo-stat-value">340</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Paid</div>
+                            <div class="demo-stat-value">285</div>
+                        </div>
+                        <div class="demo-stat">
+                            <div class="demo-stat-label">Revenue</div>
+                            <div class="demo-stat-value">R68,500</div>
+                        </div>
+                    </div>
+
+                    <table class="demo-table">
+                        <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>Date</th>
+                                <th>Registrations</th>
+                                <th>Paid</th>
+                                <th>Outstanding</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Annual Conference 2026</strong></td>
+                                <td>Sept 15-17</td>
+                                <td>156</td>
+                                <td>148</td>
+                                <td>R3,000</td>
+                                <td><span style="background: #3B82F6; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">Confirmed</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Networking Lunch</strong></td>
+                                <td>Sept 8</td>
+                                <td>78</td>
+                                <td>75</td>
+                                <td>R1,200</td>
+                                <td><span style="background: #3B82F6; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">Confirmed</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Training Workshop</strong></td>
+                                <td>Sept 22</td>
+                                <td>62</td>
+                                <td>42</td>
+                                <td>R4,800</td>
+                                <td><span style="background: #3B82F6; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gala Dinner</strong></td>
+                                <td>Oct 10</td>
+                                <td>44</td>
+                                <td>20</td>
+                                <td>R4,800</td>
+                                <td><span style="background: #3B82F6; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">Open</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `
+            }
+        };
+
+        function openDemo(demoType) {
+            const modal = document.getElementById('demoModal');
+            const title = document.getElementById('demoTitle');
+            const body = document.getElementById('demoBody');
+
+            if (demoContent[demoType]) {
+                title.textContent = demoContent[demoType].title;
+                body.innerHTML = demoContent[demoType].content;
+                modal.classList.add('active');
+            }
+        }
+
+        function closeDemo() {
+            document.getElementById('demoModal').classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('demoModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('demoModal')) {
+                closeDemo();
+            }
+        });
+
+        // Form handling
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            // Collect form data
+            const formData = {
+                name: document.getElementById('name').value,
+                company: document.getElementById('company').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                industry: document.getElementById('industry').value,
+                currentSystems: document.getElementById('current-systems').value,
+                problem: document.getElementById('problem').value,
+                build: Array.from(document.querySelectorAll('input[name="build"]:checked')).map(cb => cb.value),
+                timestamp: new Date().toISOString()
+            };
+
+            // Log to console (in production, this would send to a backend)
+            console.log('Lead Form Submitted:', formData);
+
+            // Store in localStorage for demo purposes
+            localStorage.setItem('lastFormSubmission', JSON.stringify(formData));
+
+            // Show success message
+            alert('Thank you for your inquiry!\n\nWe appreciate your interest in iHubSA. We typically respond within 24 hours.\n\n📧 Email: [COMPANY_EMAIL]\n📞 Phone: [PHONE_NUMBER]');
+
+            // Reset form
+            document.getElementById('leadForm').reset();
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Smooth scroll links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    scrollTo(href.substring(1));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
