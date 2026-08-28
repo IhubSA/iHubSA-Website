@@ -471,6 +471,8 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
 .f-contact .icon{width:16px;height:16px;color:var(--orange);flex:none;margin-top:4px}
 .f-ph{color:#7FA3BC;font-style:italic}
 .form-side .f-ph{color:var(--muted)}
+.f-link{color:var(--blue);font-size:.89rem;text-decoration:none;border-bottom:1px solid var(--blue-100);transition:.2s}
+.f-link:hover{color:var(--orange);border-bottom-color:var(--orange)}
 .f-bottom{border-top:1px solid rgba(255,255,255,.1);padding:24px 0;display:flex;
   justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;font-size:.86rem;position:relative;z-index:2}
 .f-bottom nav{display:flex;gap:1.6rem;flex-wrap:wrap}
@@ -1283,7 +1285,7 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
           <div><b>You decide what happens next</b><em>No obligation. If it isn't worth building, we'll say so.</em></div></div>
         <div style="border-top:1px solid var(--line);padding-top:1.6rem;margin-top:1.8rem">
           <div class="fs-item" style="margin-bottom:.9rem"><span class="fs-ico" style="background:var(--blue-50);color:var(--blue)"><svg class="icon"><use href="#i-mail"/></svg></span>
-            <div><b>Email</b><em class="f-ph">[COMPANY EMAIL]</em></div></div>
+            <div><b>Email</b><a class="f-link" href="mailto:ihubsa@gmail.com">ihubsa@gmail.com</a></div></div>
           <div class="fs-item" style="margin-bottom:0"><span class="fs-ico" style="background:var(--blue-50);color:var(--blue)"><svg class="icon"><use href="#i-phone"/></svg></span>
             <div><b>Phone</b><em class="f-ph">[PHONE NUMBER]</em></div></div>
         </div>
@@ -1340,10 +1342,14 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
         </form>
 
         <div class="ok-msg" id="okMsg">
-          <span class="ok-ico"><svg class="icon"><use href="#i-check"/></svg></span>
-          <h3>Thank you — we've got it.</h3>
-          <p>We'll review what you've sent and come back to you. If it's urgent, reach us on <strong class="f-ph">[PHONE NUMBER]</strong>.</p>
-          <button type="button" class="btn btn-ghost" style="margin-top:1.4rem" id="againBtn">Send another enquiry</button>
+          <span class="ok-ico"><svg class="icon"><use href="#i-send"/></svg></span>
+          <h3>Almost there — just press send.</h3>
+          <p>We've opened your email app with your enquiry ready to go to <strong>ihubsa@gmail.com</strong>. It only reaches us once you send it.</p>
+          <p id="attachNote" style="display:none;margin-top:.8rem;color:var(--orange-600);font-weight:600">Remember to attach your spreadsheet to that email.</p>
+          <p style="margin-top:1.2rem;font-size:.88rem">Nothing opened? Email us directly:</p>
+          <a class="btn btn-o" style="margin-top:.8rem" href="mailto:ihubsa@gmail.com"><svg class="icon"><use href="#i-mail"/></svg> ihubsa@gmail.com</a>
+          <br>
+          <button type="button" class="btn btn-ghost" style="margin-top:1rem" id="againBtn">Start over</button>
         </div>
       </div>
     </div>
@@ -1391,7 +1397,7 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
       <div>
         <h4>Contact</h4>
         <ul class="f-contact">
-          <li><svg class="icon"><use href="#i-mail"/></svg><span class="f-ph">[COMPANY EMAIL]</span></li>
+          <li><svg class="icon"><use href="#i-mail"/></svg><a href="mailto:ihubsa@gmail.com" style="padding:0">ihubsa@gmail.com</a></li>
           <li><svg class="icon"><use href="#i-phone"/></svg><span class="f-ph">[PHONE NUMBER]</span></li>
           <li><svg class="icon"><use href="#i-pin"/></svg><span class="f-ph">[ADDRESS]</span></li>
         </ul>
@@ -1431,6 +1437,12 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
 <script>
 (function(){
 'use strict';
+
+/* ---------------------------------------------------------------
+   Where enquiries go. Change this one line to redirect the form,
+   the contact panel link and the footer link all at once.
+   --------------------------------------------------------------- */
+var ENQUIRY_EMAIL = 'ihubsa@gmail.com';
 
 var $  = function(s,c){ return (c||document).querySelector(s); };
 var $$ = function(s,c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); };
@@ -1810,7 +1822,10 @@ form.addEventListener('submit', function(e){
     submitted_at:    new Date().toISOString()
   };
 
-  /* ===== SUPABASE INTEGRATION POINT ==================================
+  /* ===== BACKEND INTEGRATION POINT ===================================
+     When the Supabase / Resend path is live (see README section 5),
+     uncomment this and delete the mailto block below it.
+
   fetch(window.IHUBSA_CONFIG.leadEndpoint, {
     method: 'POST',
     headers: {
@@ -1824,13 +1839,45 @@ form.addEventListener('submit', function(e){
   .catch(function(err){ console.error(err); });
   ================================================================== */
 
-  console.info('[iHubSA] Lead captured (frontend only — not sent anywhere yet):', payload);
+  /* ===== MAILTO DELIVERY (active) ====================================
+     Static hosting can't send mail on its own, so the enquiry is
+     composed into the visitor's email client, addressed to
+     ENQUIRY_EMAIL. Works everywhere with no backend or signup.
+     ================================================================== */
+  var nl = '\r\n';
+  var body =
+    'New enquiry from the iHubSA website' + nl +
+    '========================================' + nl + nl +
+    'Name:      ' + payload.name + nl +
+    'Company:   ' + payload.company + nl +
+    'Email:     ' + payload.email + nl +
+    'Phone:     ' + (payload.phone || 'Not provided') + nl +
+    'Industry:  ' + (payload.industry || 'Not specified') + nl +
+    'Currently using: ' + (payload.currently_using || 'Not specified') + nl + nl +
+    'PROBLEM TO SOLVE' + nl +
+    '----------------------------------------' + nl +
+    payload.problem + nl + nl +
+    'WOULD LIKE TO BUILD' + nl +
+    '----------------------------------------' + nl +
+    (payload.build_options.length ? payload.build_options.join(', ') : 'Not specified') + nl + nl +
+    (payload.has_attachment
+      ? 'NOTE: The sender selected a spreadsheet to share. Please ask them to attach it to this email before sending.' + nl + nl
+      : '') +
+    'Submitted: ' + new Date().toLocaleString('en-ZA') + nl;
+
+  var mailto = 'mailto:' + ENQUIRY_EMAIL +
+    '?subject=' + encodeURIComponent('Website enquiry — ' + payload.company) +
+    '&body=' + encodeURIComponent(body);
+
+  window.location.href = mailto;
+
+  $('#attachNote').style.display = payload.has_attachment ? 'block' : 'none';
 
   setTimeout(function(){
     form.style.display = 'none';
     okMsg.classList.add('on');
     okMsg.scrollIntoView({behavior:'smooth', block:'center'});
-  }, 500);
+  }, 600);
 });
 
 $('#againBtn').addEventListener('click', function(){

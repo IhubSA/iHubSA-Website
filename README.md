@@ -35,9 +35,12 @@ Open `index.html` and search for these. They appear in the contact section and t
 
 | Placeholder | Replace with |
 |---|---|
-| `[COMPANY EMAIL]` | Your real email address |
-| `[PHONE NUMBER]` | Your real phone number |
-| `[ADDRESS]` | Your physical or postal address |
+| `[PHONE NUMBER]` | Your real phone number (2 places) |
+| `[ADDRESS]` | Your physical or postal address (1 place) |
+
+The email address is already set to **ihubsa@gmail.com** throughout. To change it, edit the
+single `ENQUIRY_EMAIL` constant at the top of the script block, then the two visible
+`mailto:` links in the contact panel and footer.
 
 Also update:
 
@@ -111,10 +114,64 @@ To remove a slot entirely, delete its whole `<figure>` block.
 
 ---
 
-## 5. Connecting the contact form to Supabase
+## 5. How enquiries reach you
 
-Right now the form validates, shows a success state and logs the payload to the browser
-console. **It does not send anything anywhere.** Wire it up like this.
+### Right now: mailto (working, no setup)
+
+All enquiries are directed to **ihubsa@gmail.com**.
+
+GitHub Pages is static hosting — it cannot send email on its own. So when a visitor submits
+the form, the browser composes a formatted enquiry and opens it in their email app,
+pre-addressed to you:
+
+```
+Subject: Website enquiry — Acme Construction
+
+New enquiry from the iHubSA website
+========================================
+
+Name:      Thandi Mokoena
+Company:   Acme Construction
+Email:     thandi@acme.co.za
+Phone:     082 555 0100
+Industry:  Construction
+Currently using: Excel
+
+PROBLEM TO SOLVE
+----------------------------------------
+We track 40 projects across 6 spreadsheets…
+
+WOULD LIKE TO BUILD
+----------------------------------------
+Business Application, Dashboard
+```
+
+The success panel is honest about this — it says *"Almost there — just press send"*, and
+offers a direct `mailto:` button in case their email app didn't open.
+
+**Know the trade-offs before you rely on it:**
+
+| | |
+|---|---|
+| ✅ Works immediately, no signup, no backend, no cost | ❌ Visitor must have a mail app configured |
+| ✅ Enquiry lands in your normal inbox, replyable | ❌ You lose anyone who abandons at the mail-app step |
+| ✅ Nothing to maintain or secure | ❌ Cannot carry the uploaded spreadsheet — the visitor is prompted to attach it |
+| | ❌ No record if they never press send |
+
+That last point is the real one. For a lead-generation site, upgrade when you can.
+
+### Upgrade: Supabase + Resend (recommended)
+
+You already run this stack. Same pattern as RFQ Hub: store the lead, then send yourself a
+notification from an Edge Function.
+
+**Note on the sending domain** — Resend will not send from `gmail.com`, since you don't own
+it. You need either a verified domain of your own for the *From* address (with
+`ihubsa@gmail.com` as the *To*), or `onboarding@resend.dev` for testing. Resend Pro allows
+multiple domains, so adding an iHubSA domain alongside `public-rfq-hub.co.za` is
+straightforward.
+
+Wire it up like this.
 
 ### Step 1 — Create the table
 
@@ -165,19 +222,83 @@ main `<script>` block:
 <script src="assets/config.js"></script>
 ```
 
-### Step 3 — Enable the fetch call
+### Step 3 — Email yourself on each new lead
 
-In `index.html`, find the comment `SUPABASE INTEGRATION POINT` inside the form submit
-handler and uncomment the `fetch(...)` block below it. Add the `Prefer` header:
+Create an Edge Function that writes the lead and emails you:
 
-```js
-headers: {
-  'Content-Type': 'application/json',
-  'apikey': window.IHUBSA_CONFIG.anonKey,
-  'Authorization': 'Bearer ' + window.IHUBSA_CONFIG.anonKey,
-  'Prefer': 'return=minimal'
-}
+```ts
+// supabase/functions/lead/index.ts
+import { createClient } from 'jsr:@supabase/supabase-js@2';
+
+const CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'content-type, apikey, authorization',
+};
+
+Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') return new Response('ok', { headers: CORS });
+
+  const lead = await req.json();
+
+  // basic guard against junk
+  if (!lead?.email || !lead?.problem) {
+    return new Response('Bad request', { status: 400, headers: CORS });
+  }
+
+  const db = createClient(
+    Deno.env.get('SUPABASE_URL')!,
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!   // safe: server-side only
+  );
+  const { error } = await db.from('leads').insert(lead);
+  if (error) return new Response(error.message, { status: 500, headers: CORS });
+
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${Deno.env.get('RESEND_API_KEY')}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'iHubSA Website <enquiries@YOUR-VERIFIED-DOMAIN>',
+      to: ['ihubsa@gmail.com'],
+      reply_to: lead.email,          // reply goes straight back to the enquirer
+      subject: `Website enquiry — ${lead.company}`,
+      html: `
+        <h2>New enquiry from the iHubSA website</h2>
+        <p><b>Name:</b> ${lead.name}<br>
+           <b>Company:</b> ${lead.company}<br>
+           <b>Email:</b> ${lead.email}<br>
+           <b>Phone:</b> ${lead.phone || '—'}<br>
+           <b>Industry:</b> ${lead.industry || '—'}<br>
+           <b>Currently using:</b> ${lead.currently_using || '—'}</p>
+        <h3>Problem to solve</h3><p>${lead.problem}</p>
+        <h3>Would like to build</h3><p>${(lead.build_options || []).join(', ') || '—'}</p>`,
+    }),
+  });
+
+  return new Response(JSON.stringify({ ok: true }), {
+    headers: { ...CORS, 'Content-Type': 'application/json' },
+  });
+});
 ```
+
+Deploy it and set the secrets:
+
+```bash
+supabase functions deploy lead
+supabase secrets set RESEND_API_KEY=re_xxx
+```
+
+Point `leadEndpoint` in `assets/config.js` at
+`https://YOUR-PROJECT.supabase.co/functions/v1/lead`.
+
+Then in `index.html`, find `BACKEND INTEGRATION POINT` in the form submit handler:
+uncomment the `fetch(...)` block and delete the `MAILTO DELIVERY` block below it. Update
+the success panel wording — "Almost there, just press send" no longer applies once the
+form posts directly.
+
+Setting `reply_to` to the enquirer's address means you can reply straight from Gmail and
+it reaches them, not the function.
 
 ### Security — read this before you commit anything
 
