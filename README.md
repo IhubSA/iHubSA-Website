@@ -17,11 +17,21 @@ ihubsa-website/
 ├── robots.txt              Crawler rules
 ├── sitemap.xml             Sitemap for search engines
 └── assets/
-    ├── logo.png            Primary logo (for light backgrounds)
-    ├── logo-white.png      Reversed logo (for the dark footer)
-    ├── favicon.ico         Browser tab icon
+    ├── favicon.ico          Browser tab icon
     ├── apple-touch-icon.png Home-screen icon for iOS
-    └── og-image.png        Social share preview (1200×630)
+    ├── og-image.png         Social share preview (1200×630)
+    ├── logo.png             Brand asset — not used by the page, kept for your other work
+    └── logo-white.png       Brand asset — reversed version, same
+```
+
+**The logo is built into `index.html` as inline vector (SVG).** It is not loaded from a
+file, so the branding renders correctly even if the `assets` folder is missing, and it
+stays sharp on any screen at any size. One copy is defined once and reused in both the
+header and footer, recoloured for the dark background with CSS variables:
+
+```css
+.logo   { --logo-ink:#0F4F72; --logo-accent:#FF7012; }  /* header */
+.f-logo { --logo-ink:#FFFFFF; }                          /* footer */
 ```
 
 Everything uses **relative paths**, so the site works at a repository subpath
@@ -35,12 +45,16 @@ Open `index.html` and search for these. They appear in the contact section and t
 
 | Placeholder | Replace with |
 |---|---|
-| `[PHONE NUMBER]` | Your real phone number (2 places) |
-| `[ADDRESS]` | Your physical or postal address (1 place) |
+| `[ADDRESS]` | Your physical or postal address — 1 place, in the footer |
 
-The email address is already set to **ihubsa@gmail.com** throughout. To change it, edit the
-single `ENQUIRY_EMAIL` constant at the top of the script block, then the two visible
-`mailto:` links in the contact panel and footer.
+That is the only placeholder left. The email is set to **enquiries@ihub-sa.co.za**
+throughout, and no phone number appears anywhere on the site.
+
+To change the email later, edit the `ENQUIRY_EMAIL` constant at the top of the script
+block, then the two visible `mailto:` links (contact panel and footer).
+
+Don't want to publish a street address? Delete the `<li>` containing `[ADDRESS]` from the
+footer's Contact column — the layout closes up on its own.
 
 Also update:
 
@@ -68,8 +82,9 @@ you have real customers who have agreed to be named.
 2. Drag in `index.html`, `README.md`, `robots.txt`, `sitemap.xml` **and the whole `assets` folder**
 3. Click **Commit changes**
 
-> The `assets` folder must keep its name and stay next to `index.html`, or the logo
-> and icons will not load.
+> The `assets` folder must keep its name and sit directly next to `index.html`, or the
+> favicon and the social share preview will not load. The logo itself is inline, so it
+> renders either way.
 
 **Turn on Pages**
 
@@ -118,7 +133,7 @@ To remove a slot entirely, delete its whole `<figure>` block.
 
 ### Right now: mailto (working, no setup)
 
-All enquiries are directed to **ihubsa@gmail.com**.
+All enquiries are directed to **enquiries@ihub-sa.co.za**.
 
 GitHub Pages is static hosting — it cannot send email on its own. So when a visitor submits
 the form, the browser composes a formatted enquiry and opens it in their email app,
@@ -165,11 +180,11 @@ That last point is the real one. For a lead-generation site, upgrade when you ca
 You already run this stack. Same pattern as RFQ Hub: store the lead, then send yourself a
 notification from an Edge Function.
 
-**Note on the sending domain** — Resend will not send from `gmail.com`, since you don't own
-it. You need either a verified domain of your own for the *From* address (with
-`ihubsa@gmail.com` as the *To*), or `onboarding@resend.dev` for testing. Resend Pro allows
-multiple domains, so adding an iHubSA domain alongside `public-rfq-hub.co.za` is
-straightforward.
+**Sending domain** — verify `ihub-sa.co.za` in Resend (add the SPF and DKIM records to your
+DNS, the same process you followed for `public-rfq-hub.co.za`). Once verified you can send
+*from* `enquiries@ihub-sa.co.za` directly, which is the cleanest setup: the address
+visitors see is the address the notification arrives from. Resend Pro supports multiple
+domains, so this sits alongside your existing one.
 
 Wire it up like this.
 
@@ -259,8 +274,8 @@ Deno.serve(async (req) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'iHubSA Website <enquiries@YOUR-VERIFIED-DOMAIN>',
-      to: ['ihubsa@gmail.com'],
+      from: 'iHubSA Website <enquiries@ihub-sa.co.za>',
+      to: ['enquiries@ihub-sa.co.za'],
       reply_to: lead.email,          // reply goes straight back to the enquirer
       subject: `Website enquiry — ${lead.company}`,
       html: `
@@ -380,8 +395,9 @@ array; the always-included items are in `BASE`.
 
 ## 9. Troubleshooting
 
-**Logo missing after deploying** — the `assets` folder wasn't uploaded, or was uploaded
-inside another folder. It must sit directly beside `index.html`.
+**Logo missing** — shouldn't happen any more: the logo is inline vector inside
+`index.html`. If the *favicon* or *social preview* is missing, the `assets` folder wasn't
+uploaded, or went inside another folder. It must sit directly beside `index.html`.
 
 **Site shows a 404** — check that the file is named exactly `index.html` (lowercase) and is
 in the repository root, and that Pages is set to the `main` branch, `/ (root)` folder.
