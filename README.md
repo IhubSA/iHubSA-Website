@@ -24,14 +24,46 @@ ihubsa-website/
     └── logo-white.png       Brand asset — reversed version, same
 ```
 
+### Dark theme
+
+The site is a **dark theme** throughout — deep navy-black surfaces, orange accents,
+soft coloured glow for depth. Everything is driven by CSS variables at the top of the
+`<style>` block, so the whole site restyles from a handful of values:
+
+```css
+--void:#040A11;    /* page background        */
+--surface:#08131E; /* alternate sections     */
+--card:#0C1B29;    /* cards                  */
+--card-2:#112537;  /* card hover             */
+--ink:#EDF4FA;     /* headings               */
+--body:#A3BACD;    /* body copy              */
+--muted:#7691A8;   /* secondary text         */
+--faint:#6E8BA3;   /* small labels, captions */
+--orange:#FF7012;  /* accent, CTAs           */
+--blue-soft:#4FA3DE; /* charts, icons        */
+```
+
+Depth on dark comes from **rim-light and glow**, not drop shadows — `--rim` puts a 1px
+highlight on the top edge of raised surfaces, and blurred colour orbs sit behind sections.
+Drop shadows alone are invisible on a black page.
+
+All text combinations were checked against **WCAG AA** (4.5:1 minimum for small text).
+If you change `--body`, `--muted` or `--faint`, re-check them — on dark backgrounds it is
+very easy to pick a grey that looks fine to you and is unreadable to someone else.
+
+The one deliberate exception to the dark palette is the **Excel spreadsheet** in the
+"Your Blueprint" section. It stays light because that is what a spreadsheet looks like —
+and the contrast against the dark page makes the "before" state land harder.
+
+---
+
 **The logo is built into `index.html` as inline vector (SVG).** It is not loaded from a
 file, so the branding renders correctly even if the `assets` folder is missing, and it
 stays sharp on any screen at any size. One copy is defined once and reused in both the
 header and footer, recoloured for the dark background with CSS variables:
 
 ```css
-.logo   { --logo-ink:#0F4F72; --logo-accent:#FF7012; }  /* header */
-.f-logo { --logo-ink:#FFFFFF; }                          /* footer */
+.logo   { --logo-ink:#FFFFFF; --logo-accent:#FF7012; }  /* header + footer */
 ```
 
 Everything uses **relative paths**, so the site works at a repository subpath
@@ -107,7 +139,29 @@ git push
 
 ---
 
-## 4. Adding your own photos
+## 4. The "Trusted by" logo wall
+
+Below the hero there is a `Trusted by` section with six placeholder slots.
+
+**It currently shows placeholders, not real clients.** Before publishing, either fill it
+or delete it — an empty logo wall is worse than no logo wall.
+
+To add a real client:
+
+```html
+<span class="logo-slot"><img src="assets/clients/acme.svg" alt="Acme Construction"></span>
+```
+
+Logos are auto-greyscaled and dimmed, then brighten to full colour on hover, so any
+colour logo sits correctly on the dark background. SVG or transparent PNG, roughly
+120 × 40px. The placeholder styling disappears automatically once an `<img>` is present.
+
+Only add organisations that have **agreed in writing** to be named. To remove the section
+entirely, delete the whole `<section class="trusted">` block.
+
+---
+
+## 5. Adding your own photos
 
 The About section has three photo slots that currently show labelled placeholders.
 
@@ -129,7 +183,7 @@ To remove a slot entirely, delete its whole `<figure>` block.
 
 ---
 
-## 5. How enquiries reach you
+## 6. How enquiries reach you
 
 ### Right now: mailto (working, no setup)
 
@@ -334,7 +388,7 @@ inserting the lead row, then save the returned path on the record.
 
 ---
 
-## 6. Future functionality
+## 7. Future functionality
 
 The structure supports adding, in roughly this order:
 
@@ -350,7 +404,7 @@ The structure supports adding, in roughly this order:
 
 ---
 
-## 7. Customising
+## 8. Customising
 
 **Brand colours** — edit the CSS variables at the top of the `<style>` block:
 
@@ -360,6 +414,11 @@ The structure supports adding, in roughly this order:
 ```
 
 Everything else derives from these, so changing them restyles the whole site.
+
+**Bento grid** — the "What We Build" section is a 3-column bento layout. Cards take
+`b-w2` (two columns) or `b-w3` (full width); the rest span one. Several contain a
+`.b-visual` block holding a small inline-SVG interface preview. To add a card, copy an
+existing `<article class="bento-card">` and adjust its span class.
 
 **Icons** — all icons are inline SVG `<symbol>` definitions in the sprite at the top of
 `<body>`. Add one with a new `id`, then use it anywhere:
@@ -378,9 +437,10 @@ array; the always-included items are in `BASE`.
 
 ---
 
-## 8. What's already handled
+## 9. What's already handled
 
 - **Responsive** — tested at 390px, 820px, 1080px and 1440px. No horizontal scrolling.
+- **Contrast** — every text/background pair verified against WCAG AA.
 - **Accessibility** — semantic landmarks, labelled form fields, ARIA on the menu and modal,
   visible focus rings, keyboard-navigable, focus trapped in the modal, Escape closes it.
 - **Reduced motion** — all animation is disabled for visitors who ask for it in their OS.
@@ -393,7 +453,7 @@ array; the always-included items are in `BASE`.
 
 ---
 
-## 9. Troubleshooting
+## 10. Troubleshooting
 
 **Logo missing** — shouldn't happen any more: the logo is inline vector inside
 `index.html`. If the *favicon* or *social preview* is missing, the `assets` folder wasn't
