@@ -415,6 +415,29 @@ The structure supports adding, in roughly this order:
 
 Everything else derives from these, so changing them restyles the whole site.
 
+**Before → After morph** — the "From Spreadsheet to Smart Business System" section is a
+single card that transforms in place rather than two columns side by side. The eight rows
+are matched pairs, so each one swaps to its counterpart:
+
+```html
+<li class="mrow" style="--i:3">
+  <span class="m-b">…Manual calculations</span>
+  <span class="m-a">…Calculations handled by the system</span>
+</li>
+```
+
+Both states occupy the same grid cell and cross-fade; `--i` staggers each row by 55ms so
+the change sweeps down the list rather than snapping. It plays itself once when scrolled
+into view, and the Before/After buttons let anyone replay or scrub it.
+
+To edit, change the text in `.m-b` / `.m-a`. To add a row, copy an `<li class="mrow">` and
+give it the next `--i` value. Keep the pairs genuinely matched — the whole effect depends
+on each "after" being the direct answer to its "before".
+
+Under `prefers-reduced-motion` the transitions are switched off and it never auto-plays,
+but the toggle still works. With JavaScript disabled a `<noscript>` block unstacks both
+lists so all the content is still readable.
+
 **Bento grid** — the "What We Build" section is a 3-column bento layout. Cards take
 `b-w2` (two columns) or `b-w3` (full width); the rest span one. Several contain a
 `.b-visual` block holding a small inline-SVG interface preview. To add a card, copy an

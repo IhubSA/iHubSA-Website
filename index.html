@@ -147,7 +147,7 @@ button{font-family:inherit}
 .hero{position:relative;padding:78px 0 0;overflow:hidden;isolation:isolate;
   background:radial-gradient(ellipse 120% 88% at 50% -14%,#0E3557 0%,#071A2B 38%,var(--void) 74%)}
 .hero .orb-1{width:760px;height:560px;background:#1466A8;top:-300px;left:50%;transform:translateX(-50%);opacity:.5}
-.hero .orb-2{width:520px;height:520px;background:var(--orange);bottom:-280px;right:-140px;opacity:.14}
+.hero .orb-2{width:680px;height:420px;background:var(--orange);bottom:-300px;left:50%;transform:translateX(-50%);opacity:.1}
 .hero-grid{max-width:var(--max);margin-inline:auto;padding:0 24px;
   display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,1.06fr);gap:56px;align-items:center;
   position:relative;z-index:2}
@@ -684,6 +684,70 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
 .anim-ring{animation:ring 1.3s cubic-bezier(.3,.7,.3,1) .2s both}
 @keyframes ring{from{stroke-dashoffset:var(--dash)}to{stroke-dashoffset:0}}
 
+/* ---------- capability strip ---------- */
+.strip{padding:24px 0 44px;background:transparent;position:relative;z-index:2}
+.strip-in{display:flex;align-items:center;justify-content:center;
+  gap:1rem 2.4rem;flex-wrap:wrap}
+.strip-in span{display:inline-flex;align-items:center;gap:.55rem;color:var(--muted);
+  font-size:.85rem;font-weight:600;white-space:nowrap}
+.strip-in .icon{width:16px;height:16px;color:var(--orange);flex:none}
+
+/* ---------- before -> after morph ---------- */
+.morph{max-width:840px;margin-inline:auto;position:relative;z-index:2}
+.morph-ctl{position:relative;display:flex;padding:5px;border-radius:100px;width:max-content;
+  margin:0 auto 34px;background:var(--card);border:1px solid var(--line);box-shadow:var(--rim)}
+.morph-ctl button{position:relative;z-index:2;border:0;background:none;cursor:pointer;
+  padding:.62rem 1.75rem;border-radius:100px;font-size:.84rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--muted);transition:color .35s}
+.morph-ctl button.on{color:#fff}
+.morph-pill{position:absolute;z-index:1;top:5px;bottom:5px;left:5px;
+  width:calc(50% - 5px);border-radius:100px;
+  background:linear-gradient(180deg,#FF832E,#F26206);
+  box-shadow:0 4px 20px rgba(255,112,18,.45);
+  transition:transform .5s cubic-bezier(.4,1.25,.5,1)}
+.morph[data-state="after"] .morph-pill{transform:translateX(100%)}
+
+.morph-card{position:relative;border-radius:var(--r-lg);padding:34px 38px;overflow:hidden;
+  background:var(--card);border:1px solid var(--line);
+  transition:border-color .6s,box-shadow .6s,background .6s}
+.morph[data-state="before"] .morph-card{border-color:rgba(255,90,90,.2);
+  box-shadow:0 0 60px rgba(255,90,90,.06),var(--rim)}
+.morph[data-state="after"] .morph-card{background:linear-gradient(158deg,#0B2B47,#071825);
+  border-color:rgba(255,112,18,.3);box-shadow:0 0 90px rgba(255,112,18,.13),var(--sh),var(--rim)}
+/* light sweeps across the card at the moment of change */
+.morph-card::after{content:'';position:absolute;top:0;bottom:0;width:38%;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,146,67,.13),transparent);
+  opacity:0;left:-40%}
+.morph.sweep .morph-card::after{animation:sweep .85s cubic-bezier(.4,0,.3,1)}
+@keyframes sweep{0%{left:-40%;opacity:0}18%{opacity:1}100%{left:105%;opacity:0}}
+
+.morph-h{display:grid;margin-bottom:1.3rem;padding-bottom:1.1rem;border-bottom:1px solid var(--line)}
+.morph-h > span{grid-area:1/1;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;
+  transition:opacity .45s,transform .45s}
+.morph-h h3{font-size:1.12rem;margin:0}
+.mrows{list-style:none;display:grid;gap:0}
+.mrow{display:grid;align-items:center;min-height:2.9rem;padding:.7rem 0;border-bottom:1px solid var(--line)}
+.mrow:last-child{border-bottom:0}
+.mrow > span{grid-area:1/1;display:flex;align-items:flex-start;gap:.85rem;font-size:.97rem;
+  transition:opacity .5s cubic-bezier(.3,.7,.3,1),transform .5s cubic-bezier(.3,.7,.3,1),filter .5s;
+  transition-delay:calc(var(--i) * 55ms)}
+.mrow .icon{width:18px;height:18px;margin-top:3px;flex:none;stroke-width:2.3}
+.m-b{color:var(--faint)}
+.m-b .icon{color:#FF5A5A;opacity:.75}
+.m-a{color:#D6E7F4}
+.m-a .icon{color:var(--orange)}
+.morph[data-state="before"] .m-a,
+.morph[data-state="before"] .morph-h .h-a{opacity:0;transform:translateY(9px);pointer-events:none}
+.morph[data-state="after"] .m-b,
+.morph[data-state="after"] .morph-h .h-b{opacity:0;transform:translateY(-9px);filter:blur(2px);pointer-events:none}
+.morph-foot{display:flex;align-items:center;justify-content:center;gap:.6rem;
+  margin-top:1.8rem;font-size:.85rem;color:var(--faint)}
+.morph-foot .icon{width:15px;height:15px;color:var(--orange)}
+@media(prefers-reduced-motion:reduce){
+  .morph-pill,.morph-card,.mrow>span,.morph-h>span{transition:none}
+  .morph.sweep .morph-card::after{animation:none}
+}
+
 /* ---------- responsive ---------- */
 @media(max-width:1080px){
   .c-4{grid-template-columns:repeat(2,1fr)}
@@ -728,6 +792,12 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
   section{padding:68px 0}
   .sec-head{margin-bottom:42px}
   .cards.c-3,.cards.c-4,.plans,.bento{grid-template-columns:1fr}
+  .morph-card{padding:26px 20px}
+  .mrow>span{font-size:.92rem;gap:.7rem}
+  .mrow{min-height:2.6rem;padding:.6rem 0}
+  .morph-ctl button{padding:.6rem 1.3rem;font-size:.79rem}
+  .strip-in{gap:.85rem 1.6rem}
+  .strip-in span{font-size:.81rem}
   .b-w2,.b-w3{grid-column:span 1}
   .why{grid-template-columns:1fr}
   .result ul,.saas-caps,.xl-list{grid-template-columns:1fr}
@@ -754,6 +824,14 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
 }
 
 </style>
+<noscript><style>
+  .morph-ctl{display:none}
+  .morph .m-a,.morph .m-b,.morph .h-a,.morph .h-b{opacity:1!important;transform:none!important;filter:none!important}
+  .mrow{grid-template-rows:auto auto;gap:.35rem}
+  .mrow>span{grid-area:auto}
+  .morph-h{display:block}
+  .morph-h>span{display:flex;margin-bottom:.6rem}
+</style></noscript>
 </head>
 <body>
 
@@ -1036,39 +1114,55 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
       <h2>From Spreadsheet to Smart Business System</h2>
       <p>The same information, restructured into something your whole organisation can rely on.</p>
     </div>
-    <div class="ba rv">
-      <div class="ba-col ba-before">
-        <div class="ba-h"><span class="ba-chip">Before</span><h3>How it works today</h3></div>
-        <ul class="ba-list">
-          <li><svg class="icon"><use href="#i-x"/></svg> Multiple Excel workbooks</li>
-          <li><svg class="icon"><use href="#i-x"/></svg> Paper forms and printouts</li>
-          <li><svg class="icon"><use href="#i-x"/></svg> WhatsApp threads and email attachments</li>
-          <li><svg class="icon"><use href="#i-x"/></svg> Manual calculations</li>
-          <li><svg class="icon"><use href="#i-x"/></svg> Conflicting file versions</li>
-          <li><svg class="icon"><use href="#i-x"/></svg> Repetitive data entry</li>
-          <li><svg class="icon"><use href="#i-x"/></svg> Reports built by hand each month</li>
-          <li><svg class="icon"><use href="#i-x"/></svg> No record of who changed what</li>
+        <div class="morph" id="morph" data-state="before">
+      <div class="morph-ctl" role="group" aria-label="Show the before or after state">
+        <span class="morph-pill" aria-hidden="true"></span>
+        <button type="button" data-go="before" class="on" aria-pressed="true">Before</button>
+        <button type="button" data-go="after" aria-pressed="false">After</button>
+      </div>
+
+      <div class="morph-card">
+        <div class="morph-h">
+          <span class="h-b"><span class="ba-chip" style="background:rgba(255,90,90,.13);color:#FF8A8A;border:1px solid rgba(255,90,90,.28)">Before</span><h3>How it works today</h3></span>
+          <span class="h-a"><span class="ba-chip" style="background:var(--orange-dim);color:var(--orange-lit);border:1px solid rgba(255,112,18,.4)">After</span><h3>How it could work</h3></span>
+        </div>
+        <ul class="mrows">
+        <li class="mrow" style="--i:0">
+          <span class="m-b"><svg class="icon"><use href="#i-x"/></svg>Multiple Excel workbooks</span>
+          <span class="m-a"><svg class="icon"><use href="#i-check"/></svg>Centralised, structured database</span>
+        </li>
+        <li class="mrow" style="--i:1">
+          <span class="m-b"><svg class="icon"><use href="#i-x"/></svg>Paper forms and printouts</span>
+          <span class="m-a"><svg class="icon"><use href="#i-check"/></svg>One online application for the whole team</span>
+        </li>
+        <li class="mrow" style="--i:2">
+          <span class="m-b"><svg class="icon"><use href="#i-x"/></svg>WhatsApp threads and email attachments</span>
+          <span class="m-a"><svg class="icon"><use href="#i-check"/></svg>Automated workflows and approvals</span>
+        </li>
+        <li class="mrow" style="--i:3">
+          <span class="m-b"><svg class="icon"><use href="#i-x"/></svg>Manual calculations</span>
+          <span class="m-a"><svg class="icon"><use href="#i-check"/></svg>Calculations handled by the system</span>
+        </li>
+        <li class="mrow" style="--i:4">
+          <span class="m-b"><svg class="icon"><use href="#i-x"/></svg>Conflicting file versions</span>
+          <span class="m-a"><svg class="icon"><use href="#i-check"/></svg>A single source of truth</span>
+        </li>
+        <li class="mrow" style="--i:5">
+          <span class="m-b"><svg class="icon"><use href="#i-x"/></svg>Repetitive data entry</span>
+          <span class="m-a"><svg class="icon"><use href="#i-check"/></svg>Validated data, captured once</span>
+        </li>
+        <li class="mrow" style="--i:6">
+          <span class="m-b"><svg class="icon"><use href="#i-x"/></svg>Reports built by hand each month</span>
+          <span class="m-a"><svg class="icon"><use href="#i-check"/></svg>Live dashboards and automated reporting</span>
+        </li>
+        <li class="mrow" style="--i:7">
+          <span class="m-b"><svg class="icon"><use href="#i-x"/></svg>No record of who changed what</span>
+          <span class="m-a"><svg class="icon"><use href="#i-check"/></svg>User permissions and full audit trail</span>
+        </li>
         </ul>
       </div>
-      <div class="ba-mid">
-        <span class="ba-mid-line"></span>
-        <span class="ba-badge"><span><svg class="icon"><use href="#i-refresh"/></svg>iHubSA<br>TRANSFORMATION</span></span>
-        <span class="ba-mid-line"></span>
-      </div>
-      <div class="ba-col ba-after">
-        <div class="grid-bg"></div>
-        <div class="ba-h"><span class="ba-chip">After</span><h3>How it could work</h3></div>
-        <ul class="ba-list">
-          <li><svg class="icon"><use href="#i-check"/></svg> Centralised, structured database</li>
-          <li><svg class="icon"><use href="#i-check"/></svg> One online application for the whole team</li>
-          <li><svg class="icon"><use href="#i-check"/></svg> Automated workflows and approvals</li>
-          <li><svg class="icon"><use href="#i-check"/></svg> Calculations handled by the system</li>
-          <li><svg class="icon"><use href="#i-check"/></svg> A single source of truth</li>
-          <li><svg class="icon"><use href="#i-check"/></svg> Validated data, captured once</li>
-          <li><svg class="icon"><use href="#i-check"/></svg> Live dashboards and automated reporting</li>
-          <li><svg class="icon"><use href="#i-check"/></svg> User permissions and full audit trail</li>
-        </ul>
-      </div>
+
+      <p class="morph-foot"><svg class="icon"><use href="#i-refresh"/></svg> Same information — restructured.</p>
     </div>
   </div>
 </section>
@@ -2207,6 +2301,51 @@ $('#againBtn').addEventListener('click', function(){
   form.style.display = '';
   form.scrollIntoView({behavior:'smooth', block:'center'});
 });
+
+/* ---------- before -> after morph ---------- */
+(function(){
+  var morph = $('#morph'); if(!morph) return;
+  var btns = $$('button[data-go]', morph);
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var touched = false, timer = null;
+
+  function setState(state, sweep){
+    if(morph.dataset.state === state) return;
+    morph.dataset.state = state;
+    btns.forEach(function(b){
+      var on = b.dataset.go === state;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+    // hide the inactive copy from screen readers so the list isn't read twice
+    $$('.m-b, .h-b', morph).forEach(function(e){ e.setAttribute('aria-hidden', state === 'after'); });
+    $$('.m-a, .h-a', morph).forEach(function(e){ e.setAttribute('aria-hidden', state === 'before'); });
+    if(sweep && !reduce){
+      morph.classList.remove('sweep'); void morph.offsetWidth; morph.classList.add('sweep');
+    }
+  }
+  setState('before');
+
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      touched = true; clearTimeout(timer);
+      setState(b.dataset.go, true);
+    });
+  });
+
+  // play it once, automatically, the first time it scrolls into view
+  if(!reduce && 'IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          io.disconnect();
+          timer = setTimeout(function(){ if(!touched) setState('after', true); }, 1100);
+        }
+      });
+    }, {threshold:.45});
+    io.observe(morph);
+  }
+})();
 
 })();
 </script>
