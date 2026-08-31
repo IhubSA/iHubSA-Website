@@ -748,6 +748,40 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
   .morph.sweep .morph-card::after{animation:none}
 }
 
+/* ---------- SaaS explainer ---------- */
+.saas-explain{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:56px}
+.se-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:30px;box-shadow:var(--rim)}
+.se-card h3{font-size:1.1rem;margin-bottom:.9rem;display:flex;align-items:center;gap:.7rem}
+.se-card h3 .icon{width:20px;height:20px;color:var(--orange);flex:none}
+.se-card p{font-size:.95rem;color:var(--muted);line-height:1.72}
+.se-card p+p{margin-top:.9rem}
+.se-eg{font-size:.88rem;color:var(--faint);margin-top:1.1rem;padding-top:1.1rem;
+  border-top:1px solid var(--line)}
+.se-card.old{background:rgba(255,90,90,.035);border-color:rgba(255,90,90,.15)}
+.se-card.old h3 .icon{color:#FF8A8A}
+
+.saas-sub{text-align:center;max-width:640px;margin:0 auto 32px}
+.saas-sub h3{font-size:1.55rem;font-weight:800;letter-spacing:-.028em;margin-bottom:.6rem}
+.saas-sub p{color:var(--muted);font-size:.98rem}
+
+.saas-paths{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:60px}
+.path{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:32px;box-shadow:var(--rim);position:relative;overflow:hidden}
+.path.hot{background:linear-gradient(165deg,rgba(255,112,18,.07),var(--card) 46%);
+  border-color:rgba(255,112,18,.3);box-shadow:0 0 60px rgba(255,112,18,.1),var(--rim)}
+.path-tag{display:inline-flex;align-items:center;gap:.45rem;font-size:.66rem;font-weight:800;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--blue-soft);
+  background:rgba(79,163,222,.1);border:1px solid rgba(79,163,222,.24);
+  padding:.3rem .75rem;border-radius:100px;margin-bottom:1.1rem}
+.path.hot .path-tag{color:var(--orange-lit);background:var(--orange-dim);
+  border-color:rgba(255,112,18,.35)}
+.path h3{font-size:1.2rem;margin-bottom:.6rem}
+.path>p{font-size:.94rem;color:var(--muted);margin-bottom:1.3rem}
+.path ul{list-style:none}
+.path li{display:flex;align-items:flex-start;gap:.7rem;font-size:.93rem;color:var(--body);padding:.44rem 0}
+.path li .icon{width:16px;height:16px;color:var(--orange);flex:none;margin-top:4px;stroke-width:2.5}
+
 /* ---------- responsive ---------- */
 @media(max-width:1080px){
   .c-4{grid-template-columns:repeat(2,1fr)}
@@ -801,6 +835,9 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
   .b-w2,.b-w3{grid-column:span 1}
   .why{grid-template-columns:1fr}
   .result ul,.saas-caps,.xl-list{grid-template-columns:1fr}
+  .saas-explain,.saas-paths{grid-template-columns:1fr}
+  .se-card,.path{padding:26px 22px}
+  .saas-sub h3{font-size:1.3rem}
   .cta-list{grid-template-columns:1fr}
   .f-grid{grid-template-columns:1fr 1fr;gap:32px}
   .modal-body{padding:18px}
@@ -1574,18 +1611,71 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
   <div class="wrap">
     <div class="sec-head rv">
       <span class="sec-tag">SaaS Development</span>
-      <h2>Have An Idea For A SaaS Product?</h2>
-      <p>Perhaps you've identified a problem that thousands of businesses have. We can help you turn that idea into a product.</p>
+      <h2>What Is SaaS — And What Could It Do For You?</h2>
+      <p>Software as a Service is simply software you log into rather than software you install. That one change has knock-on effects worth understanding — whether you want to use it, or build one of your own.</p>
     </div>
-    <div style="max-width:960px;margin-inline:auto" class="rv">
-      <div class="journey">
+    <div style="max-width:960px;margin-inline:auto">
+      <div class="saas-explain rv">
+        <div class="se-card">
+          <h3><svg class="icon"><use href="#i-server"/></svg> What it actually means</h3>
+          <p>Instead of buying software and installing it on a machine in your office, you open it in a web browser and pay a monthly or annual fee for as long as you use it. The company that built it takes care of the hosting, the security, the backups and the updates. You log in and work.</p>
+          <p class="se-eg">You are almost certainly using several already — Microsoft&nbsp;365, Google Workspace, Xero and Sage all work this way.</p>
+        </div>
+        <div class="se-card old">
+          <h3><svg class="icon"><use href="#i-alert"/></svg> What it replaces</h3>
+          <p>The older model: buy a licence up front, install it on a server in the office, buy and maintain that server, pay someone to keep it patched and backed up — then pay again in a few years when your version stops being supported.</p>
+          <p class="se-eg">If the office loses power or that one machine fails, so does the software — and often so does the only copy of the data.</p>
+        </div>
+      </div>
+
+      <div class="saas-sub rv">
+        <h3>Two ways this applies to your business</h3>
+        <p>People use the word "SaaS" to mean two quite different things. Both are worth knowing before you decide what to build.</p>
+      </div>
+
+      <div class="saas-paths rv">
+        <div class="path">
+          <span class="path-tag">Path 1 · Most common</span>
+          <h3>Software for your own business, delivered as a service</h3>
+          <p>This is what most of our work looks like. Your application lives online and your team simply logs in.</p>
+          <ul>
+            <li><svg class="icon"><use href="#i-check"/></svg> Nothing to install, and no server to buy or maintain</li>
+            <li><svg class="icon"><use href="#i-check"/></svg> Works on a laptop at the office, a phone on site, a tablet in the field</li>
+            <li><svg class="icon"><use href="#i-check"/></svg> Backups, security patches and updates handled for you</li>
+            <li><svg class="icon"><use href="#i-check"/></svg> A predictable running cost instead of a large once-off outlay</li>
+            <li><svg class="icon"><use href="#i-check"/></svg> Add or remove users as your team changes</li>
+            <li><svg class="icon"><use href="#i-check"/></svg> New staff have access on their first day</li>
+            <li><svg class="icon"><use href="#i-check"/></svg> One version of the system, so everyone really is looking at the same data</li>
+          </ul>
+        </div>
+        <div class="path hot">
+          <span class="path-tag">Path 2 · A product of your own</span>
+          <h3>A SaaS product you own and sell to others</h3>
+          <p>If the problem you have is a problem your whole industry has, the system you build to solve it can become something you sell.</p>
+          <ul>
+            <li><svg class="icon"><use href="#i-check"/></svg> Recurring subscription income rather than once-off project revenue</li>
+            <li><svg class="icon"><use href="#i-check"/></svg> Build it once, sell it many times over</li>
+            <li><svg class="icon"><use href="#i-check"/></svg> Often starts life as an internal tool that turned out to be worth more outside</li>
+            <li><svg class="icon"><use href="#i-check"/></svg> Becomes a business asset in its own right, not just an operating expense</li>
+            <li><svg class="icon"><use href="#i-check"/></svg> Direct insight into how customers actually use what you have built</li>
+            <li><svg class="icon"><use href="#i-check"/></svg> You control the roadmap — it grows in the direction your market pulls it</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="saas-sub rv">
+        <h3>Have an idea for a SaaS product?</h3>
+        <p>Perhaps you've identified a problem that thousands of businesses have. This is the path from that idea to something people pay for.</p>
+      </div>
+
+      <div class="journey rv">
         <div class="jn"><span class="jn-num">01</span><svg class="icon"><use href="#i-sparkle"/></svg><b>Idea</b></div>
         <div class="jn"><span class="jn-num">02</span><svg class="icon"><use href="#i-pen"/></svg><b>Prototype</b></div>
         <div class="jn"><span class="jn-num">03</span><svg class="icon"><use href="#i-code"/></svg><b>MVP</b></div>
         <div class="jn"><span class="jn-num">04</span><svg class="icon"><use href="#i-server"/></svg><b>SaaS Platform</b></div>
         <div class="jn"><span class="jn-num">05</span><svg class="icon"><use href="#i-trend"/></svg><b>Users &amp; Revenue</b></div>
       </div>
-      <ul class="saas-caps">
+      <ul class="saas-caps rv">
         <li><svg class="icon"><use href="#i-check"/></svg> Product design</li>
         <li><svg class="icon"><use href="#i-check"/></svg> User experience</li>
         <li><svg class="icon"><use href="#i-check"/></svg> Database architecture</li>
@@ -1597,7 +1687,7 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
         <li><svg class="icon"><use href="#i-check"/></svg> Ongoing development</li>
         <li><svg class="icon"><use href="#i-check"/></svg> Scaling &amp; support</li>
       </ul>
-      <div style="text-align:center;margin-top:2.4rem">
+      <div style="text-align:center;margin-top:2.4rem" class="rv">
         <a class="btn btn-o btn-lg" href="#contact">Discuss Your SaaS Idea <svg class="icon"><use href="#i-arrow-r"/></svg></a>
       </div>
     </div>
