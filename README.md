@@ -415,6 +415,35 @@ The structure supports adding, in roughly this order:
 
 Everything else derives from these, so changing them restyles the whole site.
 
+**3D chrome objects** — the floating sphere, torus, star and cone are hand-built inline
+SVG, not renders or a 3D library. Chrome is faked with *hard* gradient bands (adjacent
+stops at nearly the same offset, e.g. `.735` / `.755`) where the surface sweeps past a
+reflected horizon; smooth ramps read as frosted plastic instead. They cost about 6KB
+total and need no dependency.
+
+Position them with the `.o-*` classes. Each carries two data attributes:
+
+```html
+<div class="obj o-torus deep" data-speed=".09" data-spin="-.02">
+```
+
+- `data-speed` — parallax rate. Higher = moves faster as you scroll = reads as closer.
+- `data-spin` — degrees of rotation per pixel scrolled. Omit for no rotation.
+- `.deep` / `.mid` — depth layers: dimmer, blurred, further back.
+
+**Do not put `filter: drop-shadow()` on these.** It rebuilds an alpha silhouette of the
+whole SVG on every parallax frame and cost ~10ms/frame when measured — enough to drop a
+mid-range phone below 60fps. On a near-black page it buys nothing visually anyway; depth
+comes from scale, opacity and blur instead. With it removed the objects measure as free.
+
+Only `.o-sphere` renders in front of content (`z-index:3`), so it sits in the grid gutter
+and is hidden below 1080px. The rest sit behind text and are harmless anywhere.
+
+**Cursor tilt** — the hero mockup, bento cards and demo cards lean toward the pointer.
+JavaScript writes `--tx` / `--ty` (rotation) and `--mx` / `--my` (glow position) and CSS
+consumes them, so nothing animates from script. Disabled under `prefers-reduced-motion`,
+on touch devices (`hover: none`), and below 820px.
+
 **Before → After morph** — the "From Spreadsheet to Smart Business System" section is a
 single card that transforms in place rather than two columns side by side. The eight rows
 are matched pairs, so each one swaps to its counterpart:
@@ -464,6 +493,7 @@ array; the always-included items are in `BASE`.
 
 - **Responsive** — tested at 390px, 820px, 1080px and 1440px. No horizontal scrolling.
 - **Contrast** — every text/background pair verified against WCAG AA.
+- **Scroll performance** — measured; the 3D objects add no measurable frame cost.
 - **Accessibility** — semantic landmarks, labelled form fields, ARIA on the menu and modal,
   visible focus rings, keyboard-navigable, focus trapped in the modal, Escape closes it.
 - **Reduced motion** — all animation is disabled for visitors who ask for it in their OS.
