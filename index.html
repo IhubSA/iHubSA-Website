@@ -2017,18 +2017,23 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
             </div></div>
 
           <button type="submit" class="btn btn-o btn-lg btn-full">Let's Explore Your Solution <svg class="icon"><use href="#i-arrow-r"/></svg></button>
+          <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
+            <label>Leave this field empty
+              <input type="text" id="f-website-url" name="website_url" tabindex="-1" autocomplete="off">
+            </label>
+          </div>
           <p class="form-note">We'll only use your details to respond to this enquiry. See our POPIA / Privacy notice.</p>
         </form>
 
         <div class="ok-msg" id="okMsg">
-          <span class="ok-ico"><svg class="icon"><use href="#i-send"/></svg></span>
-          <h3>Almost there — just press send.</h3>
-          <p>We've opened your email app with your enquiry ready to go to <strong>enquiries@ihub-sa.co.za</strong>. It only reaches us once you send it.</p>
-          <p id="attachNote" style="display:none;margin-top:.8rem;color:var(--orange-600);font-weight:600">Remember to attach your spreadsheet to that email.</p>
-          <p style="margin-top:1.2rem;font-size:.88rem">Nothing opened? Email us directly:</p>
+          <span class="ok-ico"><svg class="icon"><use href="#i-check"/></svg></span>
+          <h3 id="okTitle">Thank you — we've got it.</h3>
+          <p id="okText">Your enquiry is with us. We'll read it properly and come back to you, usually within one working day.</p>
+          <p id="attachNote" style="display:none;margin-top:.8rem;color:var(--orange-lit);font-weight:600">You selected a spreadsheet — reply to our email with it attached and we'll take a look.</p>
+          <p style="margin-top:1.2rem;font-size:.88rem">Prefer email? Reach us directly:</p>
           <a class="btn btn-o" style="margin-top:.8rem" href="mailto:enquiries@ihub-sa.co.za"><svg class="icon"><use href="#i-mail"/></svg> enquiries@ihub-sa.co.za</a>
           <br>
-          <button type="button" class="btn btn-ghost" style="margin-top:1rem" id="againBtn">Start over</button>
+          <button type="button" class="btn btn-ghost" style="margin-top:1rem" id="againBtn">Send another enquiry</button>
         </div>
       </div>
     </div>
@@ -2121,6 +2126,13 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
    the contact panel link and the footer link all at once.
    --------------------------------------------------------------- */
 var ENQUIRY_EMAIL = 'enquiries@ihub-sa.co.za';
+
+/* Supabase Edge Function that saves the enquiry and emails ENQUIRY_EMAIL.
+   No API key belongs here: the function is public (verify_jwt off) and does its
+   own validation, and the leads table has RLS with no policies, so this URL
+   cannot be used to read anything. If the request fails for any reason the form
+   falls back to opening the visitor's mail client. */
+var LEAD_ENDPOINT = 'https://ziladpnlfajtiboavwvn.supabase.co/functions/v1/ihub-website-lead';
 
 var $  = function(s,c){ return (c||document).querySelector(s); };
 var $$ = function(s,c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); };
@@ -2500,66 +2512,74 @@ form.addEventListener('submit', function(e){
     submitted_at:    new Date().toISOString()
   };
 
-  /* ===== BACKEND INTEGRATION POINT ===================================
-     When the Supabase / Resend path is live (see README section 6),
-     uncomment this and delete the mailto block below it.
+  payload.website_url = $('#f-website-url').value;   // honeypot, must stay empty
+  payload.source = 'website';
 
-  fetch(window.IHUBSA_CONFIG.leadEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': window.IHUBSA_CONFIG.anonKey,
-      'Authorization': 'Bearer ' + window.IHUBSA_CONFIG.anonKey
-    },
-    body: JSON.stringify(payload)
-  })
-  .then(function(r){ if(!r.ok) throw new Error('Submission failed'); })
-  .catch(function(err){ console.error(err); });
-  ================================================================== */
-
-  /* ===== MAILTO DELIVERY (active) ====================================
-     Static hosting can't send mail on its own, so the enquiry is
-     composed into the visitor's email client, addressed to
-     ENQUIRY_EMAIL. Works everywhere with no backend or signup.
-     ================================================================== */
-  var nl = '\r\n';
-  var body =
-    'New enquiry from the iHubSA website' + nl +
-    '========================================' + nl + nl +
-    'Name:      ' + payload.name + nl +
-    'Company:   ' + payload.company + nl +
-    'Email:     ' + payload.email + nl +
-    'Phone:     ' + (payload.phone || 'Not provided') + nl +
-    'Industry:  ' + (payload.industry || 'Not specified') + nl +
-    'Currently using: ' + (payload.currently_using || 'Not specified') + nl + nl +
-    'PROBLEM TO SOLVE' + nl +
-    '----------------------------------------' + nl +
-    payload.problem + nl + nl +
-    'WOULD LIKE TO BUILD' + nl +
-    '----------------------------------------' + nl +
-    (payload.build_options.length ? payload.build_options.join(', ') : 'Not specified') + nl + nl +
-    (payload.has_attachment
-      ? 'NOTE: The sender selected a spreadsheet to share. Please ask them to attach it to this email before sending.' + nl + nl
-      : '') +
-    'Submitted: ' + new Date().toLocaleString('en-ZA') + nl;
-
-  var mailto = 'mailto:' + ENQUIRY_EMAIL +
-    '?subject=' + encodeURIComponent('Website enquiry — ' + payload.company) +
-    '&body=' + encodeURIComponent(body);
-
-  window.location.href = mailto;
-
-  $('#attachNote').style.display = payload.has_attachment ? 'block' : 'none';
-
-  setTimeout(function(){
+  function showOk(title, text){
+    $('#okTitle').textContent = title;
+    $('#okText').innerHTML = text;
+    $('#attachNote').style.display = payload.has_attachment ? 'block' : 'none';
     form.style.display = 'none';
     okMsg.classList.add('on');
     okMsg.scrollIntoView({behavior:'smooth', block:'center'});
-  }, 600);
+  }
+
+  /* Fallback: if the endpoint is unreachable, compose the enquiry into the
+     visitor's own mail client rather than losing it. */
+  function mailtoFallback(){
+    var nl = '\r\n';
+    var lines =
+      'New enquiry from the iHubSA website' + nl +
+      '========================================' + nl + nl +
+      'Name:      ' + payload.name + nl +
+      'Company:   ' + payload.company + nl +
+      'Email:     ' + payload.email + nl +
+      'Phone:     ' + (payload.phone || 'Not provided') + nl +
+      'Industry:  ' + (payload.industry || 'Not specified') + nl +
+      'Currently using: ' + (payload.currently_using || 'Not specified') + nl + nl +
+      'PROBLEM TO SOLVE' + nl +
+      '----------------------------------------' + nl +
+      payload.problem + nl + nl +
+      'WOULD LIKE TO BUILD' + nl +
+      '----------------------------------------' + nl +
+      (payload.build_options.length ? payload.build_options.join(', ') : 'Not specified') + nl;
+
+    window.location.href = 'mailto:' + ENQUIRY_EMAIL +
+      '?subject=' + encodeURIComponent('Website enquiry \u2014 ' + payload.company) +
+      '&body=' + encodeURIComponent(lines);
+
+    showOk('Almost there \u2014 just press send.',
+      "We couldn't reach our server, so we've opened your email app instead with your enquiry ready to go. " +
+      'It only reaches us once you send it.');
+  }
+
+  fetch(LEAD_ENDPOINT, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  })
+  .then(function(r){
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(function(res){
+    if(!res || !res.ok) throw new Error('Rejected');
+    showOk("Thank you \u2014 we've got it.",
+      "Your enquiry is with us. We'll read it properly and come back to you, usually within one working day.");
+  })
+  .catch(function(err){
+    console.warn('[iHubSA] lead endpoint unavailable, falling back to email:', err);
+    mailtoFallback();
+  })
+  .finally(function(){
+    btn.disabled = false;
+    btn.style.opacity = '';
+  });
 });
 
 $('#againBtn').addEventListener('click', function(){
   form.reset();
+  $('#f-website-url').value = '';
   showFile();
   $$('.chip', chipBox).forEach(function(c){ c.classList.remove('on'); });
   var btn = $('button[type=submit]', form);

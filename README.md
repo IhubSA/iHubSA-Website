@@ -185,206 +185,65 @@ To remove a slot entirely, delete its whole `<figure>` block.
 
 ## 6. How enquiries reach you
 
-### Right now: mailto (working, no setup)
-
-All enquiries are directed to **enquiries@ihub-sa.co.za**.
-
-GitHub Pages is static hosting — it cannot send email on its own. So when a visitor submits
-the form, the browser composes a formatted enquiry and opens it in their email app,
-pre-addressed to you:
+**Live.** The form posts to a Supabase Edge Function which saves the enquiry and
+emails **enquiries@ihub-sa.co.za**.
 
 ```
-Subject: Website enquiry — Acme Construction
-
-New enquiry from the iHubSA website
-========================================
-
-Name:      Thandi Mokoena
-Company:   Acme Construction
-Email:     thandi@acme.co.za
-Phone:     082 555 0100
-Industry:  Construction
-Currently using: Excel
-
-PROBLEM TO SOLVE
-----------------------------------------
-We track 40 projects across 6 spreadsheets…
-
-WOULD LIKE TO BUILD
-----------------------------------------
-Business Application, Dashboard
+form  ->  ihub-website-lead (Edge Function)  ->  ihub_leads table
+                                             ->  Resend  ->  enquiries@ihub-sa.co.za
 ```
 
-The success panel is honest about this — it says *"Almost there — just press send"*, and
-offers a direct `mailto:` button in case their email app didn't open.
-
-**Know the trade-offs before you rely on it:**
-
-| | |
+| Piece | Where |
 |---|---|
-| ✅ Works immediately, no signup, no backend, no cost | ❌ Visitor must have a mail app configured |
-| ✅ Enquiry lands in your normal inbox, replyable | ❌ You lose anyone who abandons at the mail-app step |
-| ✅ Nothing to maintain or secure | ❌ Cannot carry the uploaded spreadsheet — the visitor is prompted to attach it |
-| | ❌ No record if they never press send |
+| Endpoint | `ziladpnlfajtiboavwvn` → Edge Functions → `ihub-website-lead` |
+| Table | `public.ihub_leads` in the same project |
+| Notification | Resend, from `website@ihub-sa.co.za`, reply-to the enquirer |
 
-That last point is the real one. For a lead-generation site, upgrade when you can.
+### Why there is no API key in the page
 
-### Upgrade: Supabase + Resend (recommended)
+`LEAD_ENDPOINT` at the top of the script is the only thing the frontend knows.
+There is no Supabase key and no Resend key in `index.html`, because:
 
-You already run this stack. Same pattern as RFQ Hub: store the lead, then send yourself a
-notification from an Edge Function.
+- the function runs with `verify_jwt` off (a public form has no JWT to present),
+  so no key is needed to call it;
+- `ihub_leads` has RLS enabled with **no policies at all**, which denies
+  everything — the endpoint cannot be used to read the lead list;
+- the Resend key lives in Supabase secrets, server-side, and never reaches a browser.
 
-**Sending domain** — verify `ihub-sa.co.za` in Resend (add the SPF and DKIM records to your
-DNS, the same process you followed for `public-rfq-hub.co.za`). Once verified you can send
-*from* `enquiries@ihub-sa.co.za` directly, which is the cleanest setup: the address
-visitors see is the address the notification arrives from. Resend Pro supports multiple
-domains, so this sits alongside your existing one.
+A Resend key in frontend code would let anyone send email as your domain. That is
+why this needs a server at all, and why the key must stay there.
 
-Wire it up like this.
+### The lead is saved before the email is attempted
 
-### Step 1 — Create the table
-
-In the Supabase SQL editor:
+If Resend fails, the row is still written and the reason is recorded in
+`ihub_leads.notify_error`. Nothing is lost silently. Check for problems with:
 
 ```sql
-create table public.leads (
-  id              bigint generated always as identity primary key,
-  name            text not null,
-  company         text not null,
-  email           text not null,
-  phone           text,
-  industry        text,
-  currently_using text,
-  problem         text not null,
-  build_options   jsonb default '[]'::jsonb,
-  has_attachment  boolean default false,
-  created_at      timestamptz default now()
-);
-
-alter table public.leads enable row level security;
-
--- Anonymous visitors may submit, but may never read what others submitted.
-create policy "anon can insert leads"
-  on public.leads for insert
-  to anon
-  with check (true);
+select id, created_at, company, email, notified_at, notify_error
+from ihub_leads order by created_at desc limit 20;
 ```
 
-Row Level Security with an insert-only policy is what makes it safe to call from the
-browser. Without it, anyone could read your entire lead list.
+`notified_at` set = the email went. `notify_error` set = it saved but did not send,
+and the column says why.
 
-### Step 2 — Add a config file
+### If the endpoint is unreachable
 
-Create `assets/config.js`:
+The form falls back to opening the visitor's mail client, exactly as before, and
+the success panel changes wording to say so. A dropped connection costs you the
+database record but not the enquiry.
 
-```js
-window.IHUBSA_CONFIG = {
-  leadEndpoint: 'https://YOUR-PROJECT.supabase.co/rest/v1/leads',
-  anonKey: 'YOUR-PUBLISHABLE-ANON-KEY'
-};
-```
+### Spam handling
 
-Reference it in `index.html`, just before the closing `</body>` tag and **above** the
-main `<script>` block:
+A hidden `website_url` honeypot field sits in the form. Humans never fill it;
+bots fill everything. When it arrives populated the function returns `200` without
+saving, so the bot believes it succeeded and does not retry. If spam ever gets
+through, the next step is a per-IP rate limit or Cloudflare Turnstile.
 
-```html
-<script src="assets/config.js"></script>
-```
+### Changing the destination address
 
-### Step 3 — Email yourself on each new lead
-
-Create an Edge Function that writes the lead and emails you:
-
-```ts
-// supabase/functions/lead/index.ts
-import { createClient } from 'jsr:@supabase/supabase-js@2';
-
-const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'content-type, apikey, authorization',
-};
-
-Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') return new Response('ok', { headers: CORS });
-
-  const lead = await req.json();
-
-  // basic guard against junk
-  if (!lead?.email || !lead?.problem) {
-    return new Response('Bad request', { status: 400, headers: CORS });
-  }
-
-  const db = createClient(
-    Deno.env.get('SUPABASE_URL')!,
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!   // safe: server-side only
-  );
-  const { error } = await db.from('leads').insert(lead);
-  if (error) return new Response(error.message, { status: 500, headers: CORS });
-
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${Deno.env.get('RESEND_API_KEY')}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: 'iHubSA Website <enquiries@ihub-sa.co.za>',
-      to: ['enquiries@ihub-sa.co.za'],
-      reply_to: lead.email,          // reply goes straight back to the enquirer
-      subject: `Website enquiry — ${lead.company}`,
-      html: `
-        <h2>New enquiry from the iHubSA website</h2>
-        <p><b>Name:</b> ${lead.name}<br>
-           <b>Company:</b> ${lead.company}<br>
-           <b>Email:</b> ${lead.email}<br>
-           <b>Phone:</b> ${lead.phone || '—'}<br>
-           <b>Industry:</b> ${lead.industry || '—'}<br>
-           <b>Currently using:</b> ${lead.currently_using || '—'}</p>
-        <h3>Problem to solve</h3><p>${lead.problem}</p>
-        <h3>Would like to build</h3><p>${(lead.build_options || []).join(', ') || '—'}</p>`,
-    }),
-  });
-
-  return new Response(JSON.stringify({ ok: true }), {
-    headers: { ...CORS, 'Content-Type': 'application/json' },
-  });
-});
-```
-
-Deploy it and set the secrets:
-
-```bash
-supabase functions deploy lead
-supabase secrets set RESEND_API_KEY=re_xxx
-```
-
-Point `leadEndpoint` in `assets/config.js` at
-`https://YOUR-PROJECT.supabase.co/functions/v1/lead`.
-
-Then in `index.html`, find `BACKEND INTEGRATION POINT` in the form submit handler:
-uncomment the `fetch(...)` block and delete the `MAILTO DELIVERY` block below it. Update
-the success panel wording — "Almost there, just press send" no longer applies once the
-form posts directly.
-
-Setting `reply_to` to the enquirer's address means you can reply straight from Gmail and
-it reaches them, not the function.
-
-### Security — read this before you commit anything
-
-- The **anon / publishable key is designed to be public.** It is safe in frontend code
-  *only* when RLS is enabled on every table it can reach. Enable RLS first.
-- **Never put the `service_role` key in this repository.** It bypasses RLS entirely and
-  gives full read/write access to your database. If one is ever committed, rotate it
-  immediately in the Supabase dashboard.
-- Anything requiring a secret (sending notification emails, calling a paid API, writing to
-  a table anon must not touch) belongs in a **Supabase Edge Function**, where the secret
-  lives server-side. Post the form to the function's URL instead of straight to the table.
-
-### File uploads
-
-The file input is wired up in the UI but is not uploaded anywhere. To store spreadsheets,
-create a Supabase Storage bucket with an insert-only policy and upload the file before
-inserting the lead row, then save the returned path on the record.
+`TO_ADDRESS` at the top of the Edge Function, then redeploy. The address shown on
+the page is separate — that is `ENQUIRY_EMAIL` in `index.html` plus the two visible
+`mailto:` links.
 
 ---
 
