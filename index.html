@@ -576,6 +576,8 @@ section{position:relative;padding:96px 0}
 .drop b{display:block;font-size:.89rem;color:var(--ink);word-break:break-word}
 .drop em{font-style:normal;font-size:.79rem;color:var(--faint)}
 .form-note{text-align:center;font-size:.8rem;color:var(--faint);margin-top:1rem}
+.form-note a{color:var(--blue-soft);text-decoration:underline;text-underline-offset:2px}
+.form-note a:hover{color:var(--orange-lit)}
 .ok-msg{display:none;text-align:center;padding:34px 20px}
 .ok-msg.on{display:block;animation:fadeIn .5s}
 .ok-ico{width:66px;height:66px;border-radius:50%;background:rgba(43,212,160,.12);
@@ -2028,7 +2030,7 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
               <input type="text" id="f-website-url" name="website_url" tabindex="-1" autocomplete="off">
             </label>
           </div>
-          <p class="form-note">We'll only use your details to respond to this enquiry. See our POPIA / Privacy notice.</p>
+          <p class="form-note">We'll only use your details to respond to this enquiry &mdash; we never sell them or send marketing. See our <a href="privacy.html">POPIA / Privacy notice</a>.</p>
         </form>
 
         <div class="ok-msg" id="okMsg">
@@ -2098,7 +2100,7 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
       <nav aria-label="Legal">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms &amp; Conditions</a>
-        <a href="#">POPIA / Privacy</a>
+        <a href="privacy.html">POPIA / Privacy</a>
       </nav>
     </div>
   </div>
