@@ -152,6 +152,8 @@ button{font-family:inherit}
   display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,1.06fr);gap:56px;align-items:center;
   position:relative;z-index:2}
 
+main{overflow-x:clip}
+
 /* pill announcement */
 .pill-badge{display:inline-flex;align-items:center;gap:.6rem;padding:.4rem .45rem .4rem .95rem;
   border-radius:100px;font-size:.81rem;font-weight:500;color:#CFE2F0;margin-bottom:1.6rem;
@@ -491,8 +493,8 @@ section{position:relative;padding:96px 0}
 .saas-caps .icon{width:16px;height:16px;color:var(--orange);flex:none;stroke-width:2.4}
 
 /* ---------- pricing ---------- */
-.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}
-.plan{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:34px;
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:start}
+.plan{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:34px;
   display:flex;flex-direction:column;box-shadow:var(--rim);transition:transform .3s,box-shadow .3s,border-color .3s}
 .plan:hover{transform:translateY(-5px);box-shadow:var(--sh),var(--rim);border-color:var(--line-2)}
 .plan.hot{border-color:rgba(255,112,18,.42);
@@ -567,6 +569,8 @@ section{position:relative;padding:96px 0}
 .drop{border:1.5px dashed var(--line-2);border-radius:12px;padding:26px;text-align:center;cursor:pointer;
   transition:.22s;position:relative;background:rgba(0,0,0,.22)}
 .drop:hover,.drop.over{border-color:var(--orange);background:var(--orange-dim)}
+.drop.bad{border-color:var(--bad);background:rgba(214,69,69,.08)}
+.drop.bad b{color:var(--bad)}
 .drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .drop .icon{width:25px;height:25px;color:var(--orange);margin:0 auto 9px}
 .drop b{display:block;font-size:.89rem;color:var(--ink);word-break:break-word}
@@ -811,6 +815,8 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
 /* ---------- responsive ---------- */
 @media(max-width:1080px){
   .c-4{grid-template-columns:repeat(2,1fr)}
+  .plan{padding:26px 22px}
+  .plans{gap:16px}
   .o-sphere{display:none}
   .inds{grid-template-columns:repeat(3,1fr)}
   .opts{grid-template-columns:repeat(2,1fr)}
@@ -2029,7 +2035,7 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
           <span class="ok-ico"><svg class="icon"><use href="#i-check"/></svg></span>
           <h3 id="okTitle">Thank you — we've got it.</h3>
           <p id="okText">Your enquiry is with us. We'll read it properly and come back to you, usually within one working day.</p>
-          <p id="attachNote" style="display:none;margin-top:.8rem;color:var(--orange-lit);font-weight:600">You selected a spreadsheet — reply to our email with it attached and we'll take a look.</p>
+          <p id="attachNote" style="display:none;margin-top:.8rem;color:var(--orange-lit);font-weight:600">We couldn't send your spreadsheet automatically — please email it to enquiries@ihub-sa.co.za and we'll take a look.</p>
           <p style="margin-top:1.2rem;font-size:.88rem">Prefer email? Reach us directly:</p>
           <a class="btn btn-o" style="margin-top:.8rem" href="mailto:enquiries@ihub-sa.co.za"><svg class="icon"><use href="#i-mail"/></svg> enquiries@ihub-sa.co.za</a>
           <br>
@@ -2464,19 +2470,50 @@ drop.addEventListener('drop', function(e){
   if(e.dataTransfer && e.dataTransfer.files.length){ fileInput.files = e.dataTransfer.files; showFile(); }
 });
 fileInput.addEventListener('change', showFile);
+
+var MAX_FILE_BYTES = 10 * 1024 * 1024;
+
+/* Reject oversized files at selection time rather than after the visitor has
+   filled in the whole form and pressed send. */
 function showFile(){
   var f = fileInput.files && fileInput.files[0];
+  drop.classList.remove('bad');
   if(!f){ dropLabel.textContent = 'Drop your file here or click to browse';
           dropHint.textContent = '.xlsx, .xls, .csv — max 10MB'; return; }
+  if(f.size > MAX_FILE_BYTES){
+    fileInput.value = '';
+    drop.classList.add('bad');
+    dropLabel.textContent = 'That file is too large';
+    dropHint.textContent = (f.size/1048576).toFixed(1)+' MB — the limit is 10MB. '
+      + 'Send it to ' + ENQUIRY_EMAIL + ' instead.';
+    return;
+  }
   dropLabel.textContent = f.name;
-  dropHint.textContent = (f.size/1048576).toFixed(2)+' MB — ready to send';
+  dropHint.textContent = (f.size/1048576).toFixed(2)+' MB — will be sent with your enquiry';
+}
+
+/* Read the chosen file as base64 so it can travel in the JSON payload.
+   Resolves to null when nothing is selected, so the caller needs no branch. */
+function readAttachment(){
+  return new Promise(function(resolve){
+    var f = fileInput.files && fileInput.files[0];
+    if(!f || f.size > MAX_FILE_BYTES) return resolve(null);
+    var r = new FileReader();
+    r.onload = function(){
+      var s = String(r.result || '');
+      resolve({ name: f.name, type: f.type || 'application/octet-stream',
+                data: s.indexOf(',') > -1 ? s.split(',').pop() : s });
+    };
+    r.onerror = function(){ resolve(null); };   // never block the enquiry itself
+    r.readAsDataURL(f);
+  });
 }
 
 /* =====================================================================
-   FORM SUBMISSION — frontend only.
-   No data is sent anywhere yet. To connect Supabase, see README.md
-   and replace the marked block below.
-   NEVER put a service_role key in this file.
+   FORM SUBMISSION
+   Posts the enquiry, and the spreadsheet if one was chosen, to the
+   ihub-website-lead Edge Function. See README.md section 6.
+   NEVER put a service_role key or a Resend key in this file.
    ===================================================================== */
 var form = $('#leadForm'), okMsg = $('#okMsg');
 
@@ -2515,10 +2552,14 @@ form.addEventListener('submit', function(e){
   payload.website_url = $('#f-website-url').value;   // honeypot, must stay empty
   payload.source = 'website';
 
-  function showOk(title, text){
+  /* fileDelivered: whether the spreadsheet actually reached us. False on the
+     mailto fallback, because a mailto: link cannot carry an attachment -- in
+     that case the visitor must be told to send the file themselves. */
+  function showOk(title, text, fileDelivered){
     $('#okTitle').textContent = title;
     $('#okText').innerHTML = text;
-    $('#attachNote').style.display = payload.has_attachment ? 'block' : 'none';
+    var needsFile = payload.has_attachment && (fileDelivered === false || !payload.attachment);
+    $('#attachNote').style.display = needsFile ? 'block' : 'none';
     form.style.display = 'none';
     okMsg.classList.add('on');
     okMsg.scrollIntoView({behavior:'smooth', block:'center'});
@@ -2550,13 +2591,16 @@ form.addEventListener('submit', function(e){
 
     showOk('Almost there \u2014 just press send.',
       "We couldn't reach our server, so we've opened your email app instead with your enquiry ready to go. " +
-      'It only reaches us once you send it.');
+      'It only reaches us once you send it.', false);
   }
 
-  fetch(LEAD_ENDPOINT, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(payload)
+  readAttachment().then(function(file){
+    if(file) payload.attachment = file;
+    return fetch(LEAD_ENDPOINT, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
   })
   .then(function(r){
     if(!r.ok) throw new Error('HTTP ' + r.status);
@@ -2565,7 +2609,8 @@ form.addEventListener('submit', function(e){
   .then(function(res){
     if(!res || !res.ok) throw new Error('Rejected');
     showOk("Thank you \u2014 we've got it.",
-      "Your enquiry is with us. We'll read it properly and come back to you, usually within one working day.");
+      "Your enquiry is with us. We'll read it properly and come back to you, usually within one working day.",
+      res.attachment_stored !== false || !payload.attachment);
   })
   .catch(function(err){
     console.warn('[iHubSA] lead endpoint unavailable, falling back to email:', err);
