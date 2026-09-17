@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>iHubSA | Business Digitalisation &amp; SaaS Solutions</title>
-<meta name="description" content="iHubSA transforms Excel spreadsheets, manual processes and business workflows into powerful online applications, databases, dashboards and SaaS solutions.">
+<title>iHubSA | Integrated Websites, Business Apps &amp; SaaS Solutions</title>
+<meta name="description" content="iHubSA builds integrated websites with your business system inside them — customer logins, dashboards and admin in one place — and turns Excel spreadsheets and manual processes into online applications, databases and SaaS solutions.">
 <meta name="theme-color" content="#040A11">
 <meta name="color-scheme" content="dark">
 <link rel="canonical" href="./">
 <meta property="og:type" content="website">
-<meta property="og:title" content="iHubSA | Business Digitalisation &amp; SaaS Solutions">
-<meta property="og:description" content="Stop running your business from spreadsheets. We turn Excel files, paperwork and manual processes into powerful online applications.">
+<meta property="og:title" content="iHubSA | Integrated Websites, Business Apps &amp; SaaS Solutions">
+<meta property="og:description" content="Most websites just describe your business. Yours could run it — a website on the front, your business system behind it.">
 <meta property="og:image" content="assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/favicon.ico" sizes="any">
@@ -170,10 +170,16 @@ main{overflow-x:clip}
 .pill-badge .go .icon{width:12px;height:12px;stroke-width:2.6}
 .pill-badge:hover .go{background:var(--orange);transform:translateX(2px)}
 
-.hero h1{margin-bottom:1.3rem}
+/* This headline is two sentences, so each gets its own block — otherwise the
+   line breaks land mid-sentence ("...Your Business. Yours / Could Run It.")
+   and the contrast the line depends on is lost. Slightly smaller than the
+   global h1 scale because it is nine words, not five. */
+.hero h1{margin-bottom:1.3rem;font-size:clamp(2rem,3.9vw,3.2rem);line-height:1.1}
+.hero h1 > span{display:block}
 .hero h1 .hl{color:var(--orange);-webkit-text-fill-color:var(--orange);
   text-shadow:0 0 44px rgba(255,112,18,.42)}
 .hero .lede{font-size:1.14rem;color:#B6CDDE;max-width:47ch;line-height:1.62;margin-bottom:1rem}
+.hero .sub strong{color:var(--ink);font-weight:600}
 .hero .sub{font-size:.97rem;color:var(--muted);max-width:53ch;margin-bottom:2.1rem}
 .hero-btns{display:flex;gap:.85rem;flex-wrap:wrap;margin-bottom:1.6rem}
 .hero-note{display:flex;align-items:center;gap:.6rem;font-size:.89rem;color:var(--muted);flex-wrap:wrap}
@@ -201,7 +207,29 @@ main{overflow-x:clip}
   overflow:hidden;white-space:nowrap}
 .mock-url .icon{width:11px;height:11px;stroke-width:2.4;color:var(--ok)}
 
-.float-card{position:absolute;background:rgba(14,30,45,.82);backdrop-filter:blur(18px);
+/* Two stacked previews cross-fading in place. The wrapper is sized by whichever
+   view is in flow; the other is absolutely positioned on top of it, so the mock
+   never changes height when they swap. */
+.mock-views{position:relative}
+.mv{opacity:0;visibility:hidden;transition:opacity .5s ease}
+.mv:not(:first-child){position:absolute;inset:0}
+.mv.on{opacity:1;visibility:visible}
+.mv svg{display:block}
+
+.mock-tabs{display:flex;gap:.3rem;padding:8px;background:rgba(0,0,0,.34);
+  border-bottom:1px solid rgba(255,255,255,.07)}
+.mt{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;
+  padding:.5rem .6rem;border-radius:8px;border:1px solid transparent;background:none;
+  color:var(--muted);font:inherit;font-size:.78rem;font-weight:600;cursor:pointer;
+  letter-spacing:-.01em;transition:.2s}
+.mt .icon{width:14px;height:14px}
+.mt:hover{color:var(--ink);background:rgba(255,255,255,.05)}
+.mt.on{background:var(--orange-dim);border-color:rgba(255,112,18,.42);color:var(--orange-lit)}
+.mt:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+
+/* Decorative captions only — they must never swallow a click meant for the
+   preview tabs underneath them. */
+.float-card{pointer-events:none;position:absolute;background:rgba(14,30,45,.82);backdrop-filter:blur(18px);
   border:1px solid var(--line-2);border-radius:var(--r);padding:.85rem 1.05rem;
   box-shadow:var(--sh),var(--rim);display:flex;align-items:center;gap:.7rem;z-index:3;
   animation:float 5.6s ease-in-out infinite}
@@ -242,6 +270,7 @@ section{position:relative;padding:96px 0}
 .rv{opacity:0;transform:translateY(28px);transition:opacity .75s cubic-bezier(.2,.7,.3,1),transform .75s cubic-bezier(.2,.7,.3,1)}
 .rv.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){
+  .mv{transition:none}
   .rv{opacity:1;transform:none;transition:none}
   *{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
   html{scroll-behavior:auto}
@@ -1197,12 +1226,12 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
 
   <div class="hero-grid">
     <div>
-      <a class="pill-badge" href="#saas"><span class="tag">New</span> Turning business problems into digital solutions <span class="go"><svg class="icon"><use href="#i-arrow-r"/></svg></span></a>
-      <h1><span class="grad">Stop Running Your Business From</span> <span class="hl">Spreadsheets.</span></h1>
-      <p class="lede">Turn your Excel files, paperwork and manual processes into powerful online applications built around the way your business actually works.</p>
-      <p class="sub">iHubSA designs and develops practical business applications, databases, dashboards and SaaS solutions that help organisations work smarter, reduce administration and gain control of their information.</p>
+      <a class="pill-badge" href="#integrated"><span class="tag">New</span> One build. One login. One system. <span class="go"><svg class="icon"><use href="#i-arrow-r"/></svg></span></a>
+      <h1><span class="grad">Most Websites Just Describe Your Business.</span> <span class="hl">Yours Could Run It.</span></h1>
+      <p class="lede">A website on the front, your business system behind it &mdash; customer logins, live data and admin in one place, not three.</p>
+      <p class="sub"><strong>Stop running your business from spreadsheets.</strong> iHubSA turns Excel files, paperwork and manual processes into integrated websites, online applications, databases, dashboards and SaaS platforms &mdash; built around the way your business actually works.</p>
       <div class="hero-btns">
-        <a class="btn btn-o btn-lg" href="#solutions">See What We Can Build <svg class="icon"><use href="#i-arrow-r"/></svg></a>
+        <a class="btn btn-o btn-lg" href="#integrated">See How It Works <svg class="icon"><use href="#i-arrow-r"/></svg></a>
         <a class="btn btn-glass btn-lg" href="#assessment">Book a Free Digital Assessment</a>
       </div>
       <p class="hero-note">
@@ -1215,8 +1244,92 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
       <div class="mock">
         <div class="mock-bar">
           <i></i><i></i><i></i>
-          <span class="mock-url"><svg class="icon"><use href="#i-lock"/></svg> app.ihub-sa.co.za/dashboard</span>
+          <span class="mock-url"><svg class="icon"><use href="#i-lock"/></svg> <span id="mockUrl">ihub-sa.co.za</span></span>
         </div>
+        <div class="mock-tabs" role="tablist" aria-label="Preview">
+          <button type="button" class="mt on" id="tabWeb" role="tab" aria-selected="true" aria-controls="mvWeb">
+            <svg class="icon"><use href="#i-globe"/></svg> Website</button>
+          <button type="button" class="mt" id="tabApp" role="tab" aria-selected="false" aria-controls="mvApp">
+            <svg class="icon"><use href="#i-dash"/></svg> Dashboard</button>
+        </div>
+        <div class="mock-views">
+        <div class="mv mv-web on" id="mvWeb">
+        <svg viewBox="0 0 640 400" role="img" aria-label="Illustration of a marketing website with a navigation bar, headline, call-to-action buttons and three feature cards" style="width:100%;height:auto;background:#071320">
+          <defs>
+            <linearGradient id="wHero" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B2338"/><stop offset="1" stop-color="#071320"/></linearGradient>
+            <linearGradient id="wShot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#123C5E"/><stop offset="1" stop-color="#0A1F31"/></linearGradient>
+            <linearGradient id="wGlow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF7012" stop-opacity=".22"/><stop offset="1" stop-color="#FF7012" stop-opacity="0"/></linearGradient>
+          </defs>
+
+          <rect x="0" y="0" width="640" height="400" fill="#071320"/>
+          <rect x="0" y="40" width="640" height="200" fill="url(#wHero)"/>
+          <ellipse cx="470" cy="120" rx="190" ry="130" fill="url(#wGlow)"/>
+
+          <!-- nav -->
+          <rect x="0" y="0" width="640" height="40" fill="#050E18"/>
+          <line x1="0" y1="40" x2="640" y2="40" stroke="#ffffff" stroke-opacity=".07"/>
+          <circle cx="28" cy="20" r="7" fill="#FF7012"/>
+          <rect x="41" y="16" width="40" height="8" rx="4" fill="#EDF4FA" opacity=".85"/>
+          <g fill="#8FB8D4" opacity=".42">
+            <rect x="300" y="16.5" width="38" height="7" rx="3.5"/>
+            <rect x="350" y="16.5" width="30" height="7" rx="3.5"/>
+            <rect x="392" y="16.5" width="44" height="7" rx="3.5"/>
+            <rect x="448" y="16.5" width="34" height="7" rx="3.5"/>
+          </g>
+          <rect x="530" y="9" width="82" height="22" rx="11" fill="#FF7012" opacity=".18" stroke="#FF7012" stroke-opacity=".5"/>
+          <rect x="548" y="16.5" width="46" height="7" rx="3.5" fill="#FF9243"/>
+
+          <!-- hero copy -->
+          <rect x="34" y="72" width="238" height="15" rx="7.5" fill="#EDF4FA" opacity=".93"/>
+          <rect x="34" y="96" width="186" height="15" rx="7.5" fill="#EDF4FA" opacity=".93"/>
+          <rect x="34" y="120" width="132" height="15" rx="7.5" fill="#FF7012"/>
+          <g fill="#7691A8" opacity=".55">
+            <rect x="34" y="152" width="228" height="8" rx="4"/>
+            <rect x="34" y="168" width="196" height="8" rx="4"/>
+          </g>
+          <rect x="34" y="192" width="112" height="30" rx="9" fill="#F26206"/>
+          <rect x="56" y="203" width="68" height="8" rx="4" fill="#fff" opacity=".95"/>
+          <rect x="156" y="192" width="96" height="30" rx="9" fill="none" stroke="#ffffff" stroke-opacity=".2"/>
+          <rect x="176" y="203" width="56" height="8" rx="4" fill="#A3BACD" opacity=".7"/>
+
+          <!-- hero image block -->
+          <rect x="332" y="66" width="276" height="162" rx="12" fill="url(#wShot)" stroke="#ffffff" stroke-opacity=".09"/>
+          <rect x="332" y="66" width="276" height="26" rx="12" fill="#0A1B2B"/>
+          <rect x="332" y="80" width="276" height="12" fill="#0A1B2B"/>
+          <circle cx="346" cy="79" r="3.4" fill="#FF5F57"/><circle cx="357" cy="79" r="3.4" fill="#FEBC2E"/><circle cx="368" cy="79" r="3.4" fill="#28C840"/>
+          <g fill="#4FA3DE" opacity=".5">
+            <rect x="348" y="108" width="74" height="7" rx="3.5"/>
+            <rect x="348" y="124" width="52" height="7" rx="3.5"/>
+          </g>
+          <rect x="348" y="146" width="112" height="62" rx="8" fill="#0E2A42"/>
+          <rect x="474" y="146" width="118" height="28" rx="8" fill="#0E2A42"/>
+          <rect x="474" y="180" width="118" height="28" rx="8" fill="#0E2A42"/>
+          <rect x="360" y="186" width="40" height="10" rx="5" fill="#FF7012" opacity=".75"/>
+
+          <!-- feature cards -->
+          <g>
+            <rect x="34" y="258" width="180" height="104" rx="12" fill="#0C1B29" stroke="#ffffff" stroke-opacity=".07"/>
+            <rect x="52" y="276" width="26" height="26" rx="8" fill="#FF7012" opacity=".16"/>
+            <rect x="52" y="316" width="94" height="8" rx="4" fill="#EDF4FA" opacity=".8"/>
+            <rect x="52" y="332" width="134" height="7" rx="3.5" fill="#7691A8" opacity=".45"/>
+            <rect x="52" y="345" width="106" height="7" rx="3.5" fill="#7691A8" opacity=".45"/>
+
+            <rect x="230" y="258" width="180" height="104" rx="12" fill="#0C1B29" stroke="#ffffff" stroke-opacity=".07"/>
+            <rect x="248" y="276" width="26" height="26" rx="8" fill="#2E86C7" opacity=".2"/>
+            <rect x="248" y="316" width="82" height="8" rx="4" fill="#EDF4FA" opacity=".8"/>
+            <rect x="248" y="332" width="134" height="7" rx="3.5" fill="#7691A8" opacity=".45"/>
+            <rect x="248" y="345" width="98" height="7" rx="3.5" fill="#7691A8" opacity=".45"/>
+
+            <rect x="426" y="258" width="180" height="104" rx="12" fill="#0C1B29" stroke="#ffffff" stroke-opacity=".07"/>
+            <rect x="444" y="276" width="26" height="26" rx="8" fill="#FF7012" opacity=".16"/>
+            <rect x="444" y="316" width="102" height="8" rx="4" fill="#EDF4FA" opacity=".8"/>
+            <rect x="444" y="332" width="134" height="7" rx="3.5" fill="#7691A8" opacity=".45"/>
+            <rect x="444" y="345" width="88" height="7" rx="3.5" fill="#7691A8" opacity=".45"/>
+          </g>
+        </svg>
+        </div>
+        
+        <div class="mv mv-app" id="mvApp" aria-hidden="true">
         <svg viewBox="0 0 640 400" role="img" aria-label="Illustration of a business dashboard showing budget figures, a bar chart, a progress ring and a trend line" style="width:100%;height:auto;background:#071320">
           <defs>
             <linearGradient id="gSide" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B1E30"/><stop offset="1" stop-color="#06101B"/></linearGradient>
@@ -1292,6 +1405,8 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
                 fill="none" stroke="#FF9243" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
           <circle cx="598" cy="314" r="4" fill="#FF9243" filter="url(#glow)"/>
         </svg>
+        </div>
+        </div>
       </div>
 
       <div class="float-card fc-a">
@@ -1322,6 +1437,7 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
 <!-- ==================== CAPABILITY STRIP ==================== -->
 <div class="strip">
   <div class="wrap strip-in">
+    <span><svg class="icon"><use href="#i-globe"/></svg> Websites</span>
     <span><svg class="icon"><use href="#i-app"/></svg> Web Applications</span>
     <span><svg class="icon"><use href="#i-db"/></svg> Databases</span>
     <span><svg class="icon"><use href="#i-dash"/></svg> Dashboards</span>
@@ -2595,6 +2711,47 @@ chipBox.innerHTML = BUILD.map(function(b){
 chipBox.addEventListener('change', function(){
   $$('.chip', chipBox).forEach(function(c){ c.classList.toggle('on', $('input',c).checked); });
 });
+
+/* ---------- hero preview: website <-> dashboard ----------
+   Auto-advances so the second view is discovered without interaction, then
+   stops permanently the moment the visitor chooses one themselves — an
+   auto-rotator that keeps moving under someone's cursor is infuriating. */
+(function(){
+  var views = {web: $('#mvWeb'), app: $('#mvApp')},
+      tabs  = {web: $('#tabWeb'), app: $('#tabApp')},
+      urls  = {web: 'ihub-sa.co.za', app: 'app.ihub-sa.co.za/dashboard'},
+      urlEl = $('#mockUrl'),
+      cur   = 'web', timer = null;
+
+  if(!views.web || !views.app || !urlEl) return;
+
+  function show(k){
+    if(k === cur) return;
+    cur = k;
+    Object.keys(views).forEach(function(n){
+      var sel = n === k;
+      views[n].classList.toggle('on', sel);
+      views[n].setAttribute('aria-hidden', sel ? 'false' : 'true');
+      tabs[n].classList.toggle('on', sel);
+      tabs[n].setAttribute('aria-selected', sel ? 'true' : 'false');
+    });
+    urlEl.textContent = urls[k];
+  }
+
+  function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+  Object.keys(tabs).forEach(function(n){
+    tabs[n].addEventListener('click', function(){ stop(); show(n); });
+  });
+
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if(!still.matches){
+    timer = setInterval(function(){ show(cur === 'web' ? 'app' : 'web'); }, 4200);
+    // Pausing on hover stops the view changing while someone is looking at it.
+    var mock = $('.mock');
+    if(mock) mock.addEventListener('mouseenter', stop);
+  }
+})();
 
 /* ---------- file drop ---------- */
 var drop = $('#drop'), fileInput = $('#f-file'),
