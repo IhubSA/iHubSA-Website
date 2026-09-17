@@ -482,7 +482,10 @@ section{position:relative;padding:96px 0}
   border:1px dashed rgba(255,255,255,.14);aspect-ratio:4/5;
   display:grid;place-items:center;text-align:center;padding:16px}
 .photo:first-child{grid-row:span 2;aspect-ratio:auto;min-height:100%}
-.photo img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+/* The image sits above the placeholder rather than replacing it. A missing
+   file removes the <img> via onerror, uncovering the placeholder again. */
+.photo img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:2}
+.photo:has(img){border-style:solid;border-color:var(--line)}
 .photo .ph{color:var(--faint)}
 .photo .ph .icon{width:28px;height:28px;margin:0 auto 8px;opacity:.7}
 .photo .ph b{display:block;font-size:.76rem;font-weight:600;color:var(--muted)}
@@ -1948,11 +1951,18 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
 
 <!--
   ============ PHOTO SLOTS ============
-  To use your own photos:
-   1. Save images into the assets/ folder (e.g. assets/team-1.jpg)
-   2. Uncomment the <img> line inside each .photo block below
-   3. The image covers the placeholder automatically
+  Drop images into assets/ and they appear. Nothing here needs editing.
+
+    assets/team-1.jpg     assets/team-2.jpg     assets/team-3.jpg
+
+  Each <img> below is live. If the file is missing the browser fires the
+  onerror handler, which removes the <img> and lets the dashed placeholder
+  show through — so a slot you have not filled yet degrades to a prompt
+  rather than a broken-image icon.
+
   Recommended size: 800 x 1000px (portrait). JPG, ~200KB each.
+  Change the alt text to describe your actual photo — it is read aloud by
+  screen readers and shown if images are turned off.
 -->
 <section class="alt" id="about">
   <div class="wrap">
@@ -1967,15 +1977,15 @@ footer ul a:hover{color:var(--orange);transform:translateX(3px)}
       </div>
       <div class="photos rv">
         <figure class="photo">
-          <!-- <img src="assets/team-1.jpg" alt="The iHubSA team at work"> -->
+          <img src="assets/team-1.jpg" alt="The iHubSA team at work" loading="lazy" onerror="this.remove()">
           <span class="ph"><svg class="icon"><use href="#i-camera"/></svg><b>Team photo</b><code>assets/team-1.jpg</code></span>
         </figure>
         <figure class="photo">
-          <!-- <img src="assets/team-2.jpg" alt="The iHubSA workspace"> -->
+          <img src="assets/team-2.jpg" alt="The iHubSA workspace" loading="lazy" onerror="this.remove()">
           <span class="ph"><svg class="icon"><use href="#i-camera"/></svg><b>Workspace</b><code>assets/team-2.jpg</code></span>
         </figure>
         <figure class="photo">
-          <!-- <img src="assets/team-3.jpg" alt="A client workshop session"> -->
+          <img src="assets/team-3.jpg" alt="A client workshop session" loading="lazy" onerror="this.remove()">
           <span class="ph"><svg class="icon"><use href="#i-camera"/></svg><b>Client session</b><code>assets/team-3.jpg</code></span>
         </figure>
       </div>
